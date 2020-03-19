@@ -1,0 +1,132 @@
+.v-image-viewer {
+  & {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 999;
+    overflow: hidden;
+  }
+
+  &-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.9);
+  }
+
+  &-btn-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    height: 64px;
+    width: 64px;
+    background-position: center;
+    background-size: 60%;
+    background-repeat: no-repeat;
+    background-image: url("../images/close.png");
+    cursor: pointer;
+    z-index: 2;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &-tool-bar {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+
+    ul,
+    li {
+      margin: 0;
+      padding: 0;
+      display: block;
+      list-style: none;
+    }
+
+    ul {
+      border-top-left-radius: 4px;
+      border-top-right-radius: 4px;
+      overflow: hidden;
+      white-space: nowrap;
+      font-size: 0;
+    }
+
+    li {
+      height: 60px;
+      width: 60px;
+      display: inline-block;
+      background-color: rgba(0, 0, 0, 0.65);
+      background-position: center;
+      background-size: 30%;
+      background-repeat: no-repeat;
+
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.75);
+      }
+    }
+
+    li[action="backward"] {
+      background-image: url("../images/backward.png");
+    }
+
+    li[action="reset"] {
+      background-image: url("../images/reset.png");
+    }
+
+    li[action="zoom-in"] {
+      background-image: url("../images/zoom-in.png");
+    }
+
+    li[action="zoom-out"] {
+      background-image: url("../images/zoom-out.png");
+    }
+
+    li[action="rotate"] {
+      background-image: url("../images/rotate.png");
+    }
+
+    li[action="forward"] {
+      background-image: url("../images/forward.png");
+    }
+  }
+
+  &-container {
+    position: absolute;
+    top: 96px;
+    bottom: 76px;
+    left: 0;
+    right: 0;
+    font-size: 0;
+    text-align: center;
+
+    img {
+      max-height: 100%;
+      max-width: 100%;
+      cursor: pointer;
+    }
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .v-image-viewer {
+    &-btn-close {
+      height: 34px;
+      width: 34px;
+    }
+
+    &-tool-bar {
+      li {
+        height: 40px;
+        width: 40px;
+      }
+    }
+  }
+}
