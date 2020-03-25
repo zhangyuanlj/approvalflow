@@ -1,0 +1,227 @@
+@item-height: 45px;
+
+.df-form-info {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+
+    img {
+        display: block;
+        width: 30px;
+        margin-right: 10px;
+    }
+
+    span {
+        font-size: 16px;
+    }
+}
+
+.df-design-canvas {
+    padding-bottom: 70px;
+
+    .nav-btn {
+        padding: 0 15px;
+        margin-bottom: 10px;
+    }
+
+    .nav-first-btn {
+        margin-top: 20px;
+    }
+
+    .bottom {
+        display: flex;
+        align-items: center;
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 60px;
+        background-color: #fff;
+        box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+
+        .ivu-btn {
+            flex: 1;
+
+            &:first-child {
+                margin: 0 5px 0 15px;
+            }
+
+            &:last-child {
+                margin: 0 15px 0 5px;
+            }
+        }
+    }
+}
+
+.df-design-item {
+    background-color: #fff;
+
+    .item-inner {
+        display: flex;
+        align-items: center;
+        height: @item-height;
+        margin-left: 20px;
+        border-bottom: 1px solid #dcdee2;
+    }
+
+    .item-remove,
+    .item-add {
+        width: 25px;
+        height: @item-height;
+        text-align: left;
+        line-height: @item-height;
+
+        .ivu-icon {
+            color: #f25643;
+            font-size: 20px;
+            vertical-align: -5px;
+        }
+    }
+
+    .item-title {
+        flex: 3;
+        width: 50%;
+        color: #000;
+        font-size: 15px;
+
+        .ellipsis {
+            display: block;
+            width: 80%;
+        }
+    }
+
+    .item-type {
+        color: #7f8286;
+
+        span {
+            font-size: 13px;
+        }
+
+        .ivu-icon {
+            font-size: 16px;
+        }
+    }
+
+    .item-sort {
+        width: @item-height;
+        height: @item-height;
+        text-align: center;
+        line-height: @item-height;
+
+        .ivu-icon {
+            color: #7f8286;
+            font-size: 20px;
+            vertical-align: -5px;
+        }
+    }
+
+    .item-add {
+        .ivu-icon {
+            color: #15bc83;
+        }
+    }
+
+    .item-children-icon {
+        color: #bfc1c2;
+        font-size: 14px;
+        margin-right: 5px;
+    }
+}
+
+//添加字段modal
+.df-add-field-model {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    opacity: 0;
+    transition: all ease-in-out 0.3s;
+    pointer-events: none;
+
+    .mask {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        opacity: 0;
+        transition: all ease-in-out 0.3s;
+        cursor: pointer;
+    }
+
+    .model-pannel {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 60%;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        transform: translateY(100%);
+        transition: all ease-in-out 0.3s;
+
+        &-title {
+            height: 45px;
+            line-height: 45px;
+            text-align: center;
+            color: #000;
+            font-size: 15px;
+            border-bottom: 1px solid #e6e6e6;
+            cursor: pointer;
+
+            .ivu-icon {
+                font-size: 16px;
+                margin-right: 10px;
+            }
+        }
+
+        &-content {
+            flex: 3;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+    }
+
+    &_show {
+        opacity: 1;
+        pointer-events: auto;
+
+        .mask {
+            opacity: 1;
+        }
+
+        .model-pannel {
+            transform: translateY(0);
+        }
+    }
+}
+
+.df-field-item {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 15px;
+    cursor: pointer;
+
+    .icon {
+        img {
+            display: block;
+            width: 20px;
+        }
+    }
+
+    .name {
+        flex: 3;
+        line-height: 40px;
+        color: #000;
+        font-size: 14px;
+        border-bottom: 1px solid #dcdee2;
+        margin-left: 20px;
+    }
+}

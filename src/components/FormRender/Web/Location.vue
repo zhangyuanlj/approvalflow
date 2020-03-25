@@ -1,7 +1,8 @@
 <template>
   <div>
-    <Input v-model="fieldData.value" @on-change="this.onChange">
-      <a slot="append" href="javascript:void(0);" @click="onShow()">选择地址</a>
+    <Input v-model="fieldData.value" readonly>
+      <Button slot="append" @click="onAuto()">{{autoBtnText}}</Button>
+      <Button slot="append" @click="onShow()">选择地址</Button>
     </Input>
     <Modal
       v-model="modalVisible"
@@ -24,6 +25,8 @@
 
 <script>
 import { WebPositionPicker } from "components/Common/PositionPicker";
+const AUTO_BTN_TEXT = "获取";
+const AUTO_LOADING_BTN_TEXT = "获取中...";
 export default {
   name: "RenderLocation",
   components: {
@@ -31,6 +34,7 @@ export default {
   },
   data() {
     return {
+      autoBtnText: AUTO_BTN_TEXT,
       modalVisible: false,
       selectedPosition: null
     };
@@ -57,6 +61,34 @@ export default {
     }
   },
   methods: {
+    onAuto() {
+      if (this.autoBtnText === AUTO_LOADING_BTN_TEXT) {
+        return;
+      }
+      const self = this;
+      const map = new window.AMap.Map("container", {
+        resizeEnable: true
+      });
+      this.autoBtnText = AUTO_LOADING_BTN_TEXT;
+      map.plugin("AMap.Geolocation", function() {
+        const geolocation = new window.AMap.Geolocation({
+          enableHighAccuracy: true,
+          timeout: 10000,
+          zoomToAccuracy: true
+        });
+        map.addControl(geolocation);
+        geolocation.getCurrentPosition();
+        window.AMap.event.addListener(geolocation, "complete", data => {
+          const address = data.formattedAddress;
+          self.autoBtnText = AUTO_BTN_TEXT;
+          self.$emit("on-value-change", address, self.index, self.parentIndex);
+        });
+        window.AMap.event.addListener(geolocation, "error", () => {
+          self.autoBtnText = AUTO_BTN_TEXT;
+          self.$Message.error("自动定位失败,请重试!");
+        });
+      });
+    },
     onShow() {
       this.modalVisible = true;
     },
@@ -70,27 +102,27 @@ export default {
     },
     onSelectPostion(selectedPosition) {
       this.selectedPosition = selectedPosition;
-    },
-    onChange(e) {
-      const value = e.target.value;
-      this.$emit("on-value-change", value, this.index, this.parentIndex);
     }
   }
 };
 </script>
+
 <style lang="less">
 .select-address-web-modal {
   .ivu-modal-body {
     padding: 0;
   }
+
   .modal-footer {
     display: flex;
     align-items: center;
+
     p {
       flex: 3;
       text-align: left;
       color: #e33d3d;
       font-size: 13px;
+
       .ivu-icon {
         margin-right: 5px;
       }

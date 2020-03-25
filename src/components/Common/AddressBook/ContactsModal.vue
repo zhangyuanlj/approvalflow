@@ -62,7 +62,7 @@ export default {
         names.push(name);
       });
       if (names.length > 2) {
-        names = `${names[0]},${names[1]}等${names.length}个联系人`;
+        names = `${names[0]},${names[1]}等${names.length}个`;
       } else {
         names = names.join(",");
       }
@@ -133,6 +133,9 @@ export default {
     .ivu-modal-body {
       height: auto;
     }
+  }
+  .ivu-modal-footer {
+    z-index: 3;
   }
 }
 </style>

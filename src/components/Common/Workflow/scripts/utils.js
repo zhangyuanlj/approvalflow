@@ -1,9 +1,7 @@
+import config from "@/config";
 import $ from "jquery";
-import {
-    rolesData,
-    directorData
-} from "./mockData";
-const APPROVER_VALUE = {
+import Http from "utils/http";
+export const APPROVER_VALUE = {
     type: "member",
     members: {
         value: []
@@ -36,7 +34,7 @@ const CONDITION_ITEM_VALUE = {
         required: true
     }]
 };
-const COPY_GIVE_VALUE = {
+export const COPY_GIVE_VALUE = {
     contacts: {
         value: []
     },
@@ -443,17 +441,23 @@ export const updateNodeData = (processNodes, node, updateData) => {
 //获取角色数据
 export const getRolesData = () => {
     return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(rolesData);
-        }, 1000);
+        Http.get({
+            url: config.apiUrl.GetRolesList,
+            succeed: (res, data) => {
+                resolve(data);
+            }
+        });
     });
 };
 //获取主管列表
 export const getDirectorData = () => {
     return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(directorData);
-        }, 1000);
+        Http.get({
+            url: config.apiUrl.GetApprovalList,
+            succeed: (res, data) => {
+                resolve(data);
+            }
+        });
     });
 };
 //根据选择的条件显示审批人文本

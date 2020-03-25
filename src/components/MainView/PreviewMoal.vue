@@ -31,13 +31,11 @@ export default {
 </script>
 <style lang="less">
 .df-preview-modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
+  position: absolute;
   left: 0;
+  top: 0;
+  width: 100%;
   background-color: #f6f6f6;
-  overflow-y: auto;
   z-index: 999;
   .goback-btn {
     position: fixed;
@@ -49,7 +47,7 @@ export default {
     padding-top: 60px;
   }
   .df-form-preview {
-    margin-top: -60px;
+    margin-top: -50px;
   }
 }
 </style>

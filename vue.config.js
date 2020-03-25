@@ -5,6 +5,8 @@ const resolve = function (dir) {
     return path.join(__dirname, dir)
 }
 module.exports = {
+    publicPath: process.env.NODE_ENV === 'production' ?
+        '/approvalflow/' : '/',
     productionSourceMap: false,
     devServer: {
         //Config proxy
@@ -30,6 +32,13 @@ module.exports = {
             filename: 'index.html',
             title: appTitle,
             chunks: ['chunk-vendors', 'chunk-common', 'index']
+        },
+        web: {
+            entry: `${pagesDir}/web/main.js`,
+            template: `public/index.html`,
+            filename: 'web.html',
+            title: appTitle,
+            chunks: ['chunk-vendors', 'chunk-common', 'web']
         },
         app: {
             entry: `${pagesDir}/app/main.js`,

@@ -96,6 +96,9 @@ export default {
       model.value = value;
       model.attribute.title = title;
       model.attribute.name = name;
+      model.attribute.parentComponent = `Overtime`;
+      model.attribute.relatedName = `${this.attribute.name}-时间区间`;
+      model.attribute.unit = "小时";
       model.attribute.validation.required = true;
       model.attribute.validationRules = [
         {

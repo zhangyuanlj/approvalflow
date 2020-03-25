@@ -10,6 +10,9 @@ import {
     UPDATE_ONE_FIELD
 } from "./type";
 import {
+    isObject
+} from "utils/helper";
+import {
     createFlatArr
 } from "./utils";
 const mutations = {
@@ -21,8 +24,15 @@ const mutations = {
     },
     [UPDATE_DESIGN_FIELD](state, selectedName) {
         const arr = createFlatArr(state);
+        const conditionCbs = (item) => {
+            if (isObject(selectedName)) {
+                return item.key === selectedName.key;
+            } else {
+                return item.name === selectedName;
+            }
+        };
         const designField = arr.find((item) => {
-            return item.name === selectedName;
+            return conditionCbs(item);
         });
         state.designField = designField;
     },

@@ -18,7 +18,12 @@
         </div>
       </div>
       <div :class="setRightClass">
-        <Select :selectedItems="selectedItems" :noData="noData" @on-selectbox-remove="onRemove"></Select>
+        <Select
+          :selectedItems="selectedItems"
+          :noData="noData"
+          @on-selectbox-remove="onRemove"
+          @on-open-select="onOpenSelect"
+        ></Select>
       </div>
     </div>
   </div>
@@ -39,7 +44,8 @@ export default {
     return {
       loading: false,
       listData: [],
-      selectedItems: []
+      selectedItems: [],
+      showRight: false
     };
   },
   props: {
@@ -131,6 +137,9 @@ export default {
     onRemove(item) {
       this.deleteNode(item);
       this.listData = unChecked(this.listData, item);
+    },
+    onOpenSelect(showSelect) {
+      this.showRight = showSelect;
     }
   }
 };
@@ -179,6 +188,7 @@ export default {
 
 @media screen and (min-width: 320px) and (max-width: 768px) {
   .df-selectbox {
+    background-color: #fff;
     .selectbox-content {
       position: relative;
       display: block;
@@ -194,6 +204,7 @@ export default {
         transform-origin: 0, 0;
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
         transition: transform 0.3s ease-in-out;
+        z-index: 2;
 
         &_show {
           transform: translateY(0);

@@ -97,6 +97,10 @@ export default {
   .df-selectbox-modal {
     .ivu-modal-body {
       height: auto;
+      background-color: #fff;
+    }
+    .ivu-modal-footer {
+      z-index: 3;
     }
   }
 }

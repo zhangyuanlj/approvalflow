@@ -1,40 +1,26 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import VueRouter from "vue-router";
-import ViewUI from "view-design/dist/iview.min.js";
-import App from "components/App.vue";
-import ProcessNode from "components/Common/Workflow/ProcessNode.vue";
-import "utils/bus";
-import "utils/route";
-import "components/Styles/reset.module.less";
+import config from "@/config";
 import {
-    web
-} from "@/router";
-import store from "@/store";
-// 路由配置
-const router = new VueRouter({
-    routes: web
-});
-router.beforeEach((to, from, next) => {
-    document.title = to.meta.title;
-    ViewUI.LoadingBar.start();
-    next();
-});
-ViewUI.LoadingBar.config({
-    color: "#5cb85c"
-});
-router.afterEach(() => {
-    window.scrollTo(0, 0);
-    ViewUI.LoadingBar.finish();
-});
-Vue.config.productionTip = false;
-//将流程节点组件注册为全局组件,fixed在递归时Vue抛出组件未注册的异常
-Vue.component("ProcessNode", ProcessNode);
-Vue.use(VueRouter);
-Vue.use(Vuex);
-Vue.use(ViewUI);
-new Vue({
-    router,
-    store,
-    render: h => h(App),
-}).$mount("#app");
+    isMobile,
+    getQueryString
+} from "utils/helper";
+const id = getQueryString("id");
+const route = getQueryString("route");
+const fromUrl = getQueryString("fromUrl");
+let baseUrl = `${config.baseUrl}`;
+if (route === null) {
+    if (isMobile()) {
+        baseUrl += "webFormDesign/";
+    } else {
+        baseUrl += "basicSetting/";
+    }
+} else {
+    baseUrl += `${route}/`;
+}
+if (id !== null) {
+    baseUrl += `?id=${encodeURI(id)}`;
+}
+if (fromUrl !== null) {
+    baseUrl += `&fromUrl=${encodeURI(fromUrl)}`;
+}
+window.localStorage.setItem("token", "54d591f42f224fb6b47616bedfae8d53");
+window.location.href = baseUrl;

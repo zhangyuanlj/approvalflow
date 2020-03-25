@@ -9,7 +9,7 @@ export const findNode = (listData, node) => {
             const children = item.children;
             if (item.id === id) {
                 searchNode = item;
-                break;
+                return;
             }
             if (children) {
                 eachNodes(children, id);

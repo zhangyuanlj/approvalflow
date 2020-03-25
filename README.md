@@ -20,5 +20,9 @@ npm run build
 npm run lint
 ```
 
+### Start mock server
+```
+npm run api-server
+```
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

@@ -49,27 +49,31 @@ export default {
   },
   methods: {
     onStartDateChange(dateTime) {
+      const self = this;
       this.$emit(
         "on-value-change",
-        [dateTime, this.fieldData.value[1]],
+        [dateTime, self.fieldData.value[1]],
         this.index,
         this.parentIndex
       );
       this.$EventBus.$emit("on-datetimerange-change", {
-        dateTime: [dateTime, this.fieldData.value[1]],
-        relatedName: this.fieldData.name
+        dateTime: [dateTime, self.fieldData.value[1]],
+        parentKey: self.fieldData.parentKey,
+        relatedName: self.fieldData.name
       });
     },
     onEndDateChange(dateTime) {
+      const self = this;
       this.$emit(
         "on-value-change",
-        [this.fieldData.value[0], dateTime],
+        [self.fieldData.value[0], dateTime],
         this.index,
         this.parentIndex
       );
       this.$EventBus.$emit("on-datetimerange-change", {
-        dateTime: [this.fieldData.value[0], dateTime],
-        relatedName: this.fieldData.name
+        dateTime: [self.fieldData.value[0], dateTime],
+        parentKey: self.fieldData.parentKey,
+        relatedName: self.fieldData.name
       });
     }
   }

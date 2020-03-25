@@ -15,7 +15,7 @@
             <Input
               v-model="basicSetting.approvalGroup.name"
               placeholder="请选择"
-              style="width:540px;"
+              :style="setApprovalGroupStyle"
               @on-change="onChange"
             ></Input>
             <DropdownMenu slot="list" style="width:230px;">
@@ -72,6 +72,7 @@
       v-model="modalVisible"
       class-name="df-setting_icons-modal"
       title="选择模板图标"
+      :fullscreen="isMobile()"
       @on-ok="onConfirm"
     >
       <div class="icons-modal-container clear-fl">
@@ -102,6 +103,7 @@ import { ContactsModal } from "components/Common/AddressBook";
 import icons from "./scripts/icons";
 import classNames from "classnames";
 import Http from "utils/http";
+import { isMobile } from "@/utils/helper";
 const APPROVAL_NAME_KEY = "approvalName";
 const APPROVALGROUP_NAME_KEY = "approvalGroupName";
 export default {
@@ -141,13 +143,24 @@ export default {
       },
       icons: icons,
       selectedIconIndex: 0,
-      modalVisible: false
+      modalVisible: false,
+      isMobile: isMobile
     };
   },
   computed: {
     setIconStyle() {
       return {
         "background-image": `url(${this.basicSetting.templateIcon})`
+      };
+    },
+    setApprovalGroupStyle() {
+      if (isMobile()) {
+        return {
+          width: "100%"
+        };
+      }
+      return {
+        width: "540px"
       };
     },
     ...mapGetters({

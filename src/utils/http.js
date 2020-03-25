@@ -10,8 +10,8 @@ import {
   Message
 } from "view-design";
 import {
-  redirect
-} from "@/utils/helper";
+  redirectLogin
+} from "utils/helper";
 const showMessage = (type, config) => {
   Message[type](config);
 }
@@ -111,29 +111,33 @@ const base = options => {
             }
             //没有登录
             else if (code === 3) {
-              const loginUrl = config.loginUrl;
-              redirect(loginUrl);
+              redirectLogin();
             }
             //业务异常
             else {
-              const msg = body.msg;
-              showMessage("error", {
-                content: msg
-              });
-              typeof errorCbs === "function" && errorCbs(body);
+              if (typeof errorCbs === "function") {
+                errorCbs(res);
+              } else {
+                const msg = body.msg;
+                showMessage("error", {
+                  content: msg
+                });
+              }
             }
           });
         } else {
-          const msg = `错误码:${res.status},错误描述:${res.statusText}!`;
-          showMessage("error", {
-            content: msg
-          });
-          typeof errorCbs === "function" && errorCbs(res);
+          if (typeof errorCbs === "function") {
+            errorCbs(res);
+          } else {
+            const msg = `错误码:${res.status},错误描述:${res.statusText}!`;
+            showMessage("error", {
+              content: msg
+            });
+          }
         }
         return res;
       })
       .catch(err => {
-        alert(3333);
         const error = {
           url: url,
           statusText: err
@@ -141,8 +145,11 @@ const base = options => {
         if (defaults.loading) {
           spinHide();
         }
-        commonExceptionFunc(error, err.message);
-        typeof failure === "function" && failure(error);
+        if (typeof failure === "function") {
+          failure(error);
+        } else {
+          commonExceptionFunc(error, err.message);
+        }
       });
   }
   return null;

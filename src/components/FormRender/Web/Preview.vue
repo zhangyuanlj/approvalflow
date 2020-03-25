@@ -3,7 +3,7 @@
     <Form ref="renderForm" :model="fieldLists" label-position="top">
       <div v-for="(item, i) in fieldLists.items" :key="i">
         <template v-if="isDetail(item.component)">
-          <Card class="df-render-detail" :dis-hover="true" :data-name="item.name">
+          <Card class="df-render-detail" :dis-hover="true">
             <div slot="title">{{item.attribute.title}}</div>
             <a
               v-show="item.isDelete"
@@ -75,10 +75,18 @@
 </template>
 
 <script>
+import config from "@/config";
+import $ from "jquery";
+import { GET_BASIC_SETTING } from "store/modules/basicSetting/type";
+import { GET_ADVANCED_SETTING } from "store/modules/advancedSetting/type";
+import { GET_NODES_DATA, GET_PERSON_LIST } from "store/modules/workflow/type";
+import { mapGetters } from "vuex";
 import { Form, FormItem, Message } from "view-design";
 import components from "./scripts/components";
 import PersonList from "./PersonList.vue";
 import validator from "./scripts/validator";
+import Http from "utils/http";
+import { uuid } from "@/utils/helper";
 export default {
   name: "FormPreview",
   components: {
@@ -96,10 +104,20 @@ export default {
     };
   },
   props: {
+    isPreview: {
+      type: Boolean,
+      default: false
+    },
     formData: {
       type: Array,
       default: () => {
         return [];
+      }
+    },
+    genera: {
+      type: Object,
+      default: () => {
+        return null;
       }
     }
   },
@@ -111,6 +129,14 @@ export default {
       deep: true
     }
   },
+  computed: {
+    ...mapGetters({
+      basicSetting: GET_BASIC_SETTING,
+      nodesData: GET_NODES_DATA,
+      personList: GET_PERSON_LIST,
+      advancedSetting: GET_ADVANCED_SETTING
+    })
+  },
   mounted() {
     this.fieldLists.items = this.formData;
   },
@@ -119,12 +145,15 @@ export default {
       const detailReg = /Detail|BusinessTravel/;
       return detailReg.test(component);
     },
+    getId() {
+      return this.$Route.getParam("id");
+    },
     setDetailProp(i, j) {
       return `items.${i}.attribute.children.${j}.value`;
     },
     setLabel(item) {
       const noLabelReg = /DateTimeRange|ExplainText|Detail|Leave|BusinessTravel/;
-      if (noLabelReg.test(item.component)) {
+      if (item.noLabel || noLabelReg.test(item.component)) {
         return "";
       }
       return item.attribute.title;
@@ -138,45 +167,45 @@ export default {
     },
     //设置items分组
     setItemsGroup(name) {
-      const items = this.fieldLists.items.filter(item => {
+      const items = JSON.parse(JSON.stringify(this.fieldLists.items));
+      const itemsGroup = items.filter(item => {
         return item.name === name;
       });
-      const len = items.length;
-      items.forEach((item, i) => {
+      const len = itemsGroup.length;
+      itemsGroup.forEach((item, i) => {
+        const key = `${item.component}-${uuid(8, 10)}`;
         const title = item.attribute.title.replace(/\d{1,}/g, "");
         if (len > 1) {
           item.isDelete = true;
           item.attribute.title = title + (i + 1);
+          item.key = key;
         } else {
           item.isDelete = false;
           item.attribute.title = title;
         }
       });
-    },
-    submit() {
-      this.$refs.renderForm.validate(valid => {
-        if (valid) {
-          Message.success("Success!");
-        } else {
-          Message.error("Fail!");
-        }
-      });
-    },
-    reset() {
-      this.$refs.renderForm.resetFields();
+      this.fieldLists.items = items;
     },
     //拷贝卡片中的字段
     copyDetailField(i) {
       const item = JSON.parse(JSON.stringify(this.fieldLists.items[i]));
-      item.value = "";
+      const key = `${item.component}-${uuid(8, 10)}`;
+      item.key = key;
+      item.value = item.value !== undefined ? item.value : "";
       item.attribute.children.forEach(children => {
         const specialValueReg = /Checkbox|DateTimeRange|Attachment|Image|Contacts|Departments/;
         let value = "";
-        if (specialValueReg.test(children.component)) {
-          value = [];
+        delete children.value;
+        if (children.value !== undefined) {
+          value = children.value;
         } else {
-          value = "";
+          if (specialValueReg.test(children.component)) {
+            value = [];
+          } else {
+            value = "";
+          }
         }
+        children.parentKey = item.key;
         children.value = value;
       });
       return item;
@@ -192,11 +221,45 @@ export default {
       this.fieldLists.items = start.concat(middle, end);
       this.setItemsGroup(name);
     },
-    onValueChange(data, i, parentIndex) {
+    submit() {
+      this.$refs.renderForm.validate(valid => {
+        if (valid) {
+          if (!this.isPreview) {
+            const requestUrl = config.apiUrl.Submit;
+            const requestData = {
+              genera: this.genera,
+              basicSetting: this.basicSetting,
+              formDesign: this.fieldLists.items,
+              processDesign: this.nodesData,
+              advancedSetting: this.advancedSetting
+            };
+            Http.post({
+              url: requestUrl,
+              data: requestData,
+              succeed: (res, data, body) => {
+                this.$Message.success(body.msg);
+              }
+            });
+          } else {
+            Message.success("数据提交成功!");
+          }
+        } else {
+          $(window).scrollTop(0);
+          Message.error("表单中存在错误项,请重新输入后在进行提交!");
+        }
+      });
+    },
+    reset() {
+      this.$refs.renderForm.resetFields();
+    },
+    onValueChange(data, i, parentIndex, key) {
+      const updateKey = key ? key : "value";
       if (parentIndex === undefined) {
-        this.fieldLists.items[i].value = data;
+        this.fieldLists.items[i][updateKey] = data;
       } else {
-        this.fieldLists.items[parentIndex].attribute.children[i].value = data;
+        this.fieldLists.items[parentIndex].attribute.children[i][
+          updateKey
+        ] = data;
       }
     },
     //删除一个item
@@ -218,25 +281,33 @@ export default {
 
 <style lang="less">
 @padding: 12px;
+
 .df-render-detail {
   margin-bottom: 15px;
+
   .ivu-card-body {
     padding: @padding;
   }
+
   .ivu-card-extra {
     top: 10px;
   }
+
   .ivu-form-item {
     margin-bottom: 15px;
+
     &-error-tip {
       position: relative;
     }
   }
+
   .delete-btn {
     font-size: 0;
+
     .ivu-icon {
       margin-right: 5px;
     }
+
     span {
       font-size: 12px;
     }

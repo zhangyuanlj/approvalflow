@@ -13,7 +13,7 @@ export default {
         name: name,
         title: name,
         props: {
-            placeholder: "请选择",
+            placeholder: "请输入",
             isConditionField: false
         },
         validation: {
@@ -30,5 +30,6 @@ export default {
                 value: `${item}3`
             }
         ]
-    }
+    },
+    inputValue: ""
 };

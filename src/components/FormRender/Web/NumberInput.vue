@@ -12,7 +12,11 @@
 </template>
 
 <script>
+import config from "@/config";
+import { GET_FIELD_LISTS } from "store/modules/formDesign/type";
+import { mapGetters } from "vuex";
 import { Input } from "view-design";
+import Http from "utils/http";
 export default {
   name: "RenderNumberInput",
   components: {
@@ -37,6 +41,9 @@ export default {
     this.bindChangeEvent();
   },
   computed: {
+    ...mapGetters({
+      fieldLists: GET_FIELD_LISTS
+    }),
     showAppend() {
       return this.fieldData.attribute.unit;
     },
@@ -46,30 +53,52 @@ export default {
     }
   },
   methods: {
-    //自动计算两个时间之间的天数
-    getDays(sDate1, sDate2) {
-      let aDate, oDate1, oDate2, iDays;
-      aDate = sDate1.split("-");
-      oDate1 = new Date(aDate[1] + "-" + aDate[2] + "-" + aDate[0]);
-      aDate = sDate2.split("-");
-      oDate2 = new Date(aDate[1] + "-" + aDate[2] + "-" + aDate[0]);
-      iDays = parseInt(Math.abs(oDate1 - oDate2) / 1000 / 60 / 60 / 24);
-      return iDays;
-    },
     onChange(data) {
+      const parentKey = data.parentKey;
       const relatedName = data.relatedName;
-      if (relatedName === this.fieldData.attribute.relatedName) {
+      if (
+        relatedName === this.fieldData.attribute.relatedName &&
+        parentKey === this.fieldData.parentKey
+      ) {
         const dateTime = data.dateTime;
         const startDate = dateTime[0];
         const endDate = dateTime[1];
         if (startDate && endDate) {
-          const startTime = new Date(startDate).getTime();
-          const endTime = new Date(endDate).getTime();
-          if (startTime <= endTime) {
-            let days = this.getDays(startDate, endDate);
-            days = days ? days.toString() : "";
-            this.$emit("on-value-change", days, this.index, this.parentIndex);
+          const parentComponent = this.fieldData.attribute.parentComponent;
+          const requestData = {
+            component: parentComponent,
+            startTime: startDate,
+            endTime: endDate
+          };
+          if (parentComponent === "Leave") {
+            const parentField = this.fieldLists[this.parentIndex];
+            const type = parentField.attribute.children.find(item => {
+              return item.name === `${parentField.attribute.name}-调休类型`;
+            });
+            const approvalVacationType = type.attribute.approvalVacationType;
+            const ret = approvalVacationType.find(item => {
+              return item.vacationName === type.value;
+            });
+            requestData["approvalVacationTypeId"] = ret
+              ? ret.approvalVacationTypeId
+              : "";
           }
+          Http.post({
+            url: config.apiUrl.DurationCalculation,
+            data: requestData,
+            succeed: (res, data) => {
+              this.$emit("on-value-change", data, this.index, this.parentIndex);
+            },
+            errorCbs: () => {
+              if (parentComponent === "Leave") {
+                this.$Message.error(
+                  "时长计算失败,请重新选择起始时间及请假类型!"
+                );
+              } else {
+                this.$Message.error("时长计算失败,请重新选择起始时间!");
+              }
+            }
+          });
         }
       }
     },

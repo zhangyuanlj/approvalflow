@@ -31,6 +31,7 @@
         class-name="df-select-conditions-modal"
         title="选择条件"
         :width="400"
+        :fullscreen="isMobile()"
         @on-ok="ok"
       >
         <template v-if="selectConditionsVisible">
@@ -55,7 +56,13 @@
           </div>
         </template>
       </Modal>
-      <Modal v-model="helpModalVisible" title="如何添加更多条件" :width="400" :footer-hide="true">
+      <Modal
+        v-model="helpModalVisible"
+        title="如何添加更多条件"
+        :width="400"
+        :fullscreen="isMobile()"
+        :footer-hide="true"
+      >
         <img :src="helpImg" width="100%" />
       </Modal>
     </template>
@@ -76,6 +83,7 @@ import ConditionOriginator from "./ConditionOriginator.vue";
 import ConditionRadio from "./ConditionRadio.vue";
 import ConditionNumber from "./ConditionNumber.vue";
 import { creatId, updateNodeData } from "./scripts/utils";
+import { isMobile } from "utils/helper";
 import helpImg from "./images/condition-expain.gif";
 export default {
   name: "ConditionModal",
@@ -93,7 +101,8 @@ export default {
         Radio: ConditionRadio,
         NumberInput: ConditionNumber,
         Amount: ConditionNumber
-      }
+      },
+      isMobile: isMobile
     };
   },
   props: {
@@ -348,6 +357,38 @@ export default {
 
   .ivu-modal-body {
     min-height: 120px;
+  }
+}
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .df-condition-modal {
+    .modal-edit-item {
+      position: relative;
+      flex-direction: column;
+      align-items: flex-start;
+      border-bottom: 1px solid #e8eaec;
+      .item-label {
+        width: 50%;
+      }
+      .item-content {
+        margin-top: 15px;
+      }
+      .item-remove {
+        position: absolute;
+        right: 0;
+        top: -5px;
+      }
+    }
+    .modal-edit-button {
+      flex-direction: column;
+      align-items: flex-start;
+      .add-expain {
+        margin-top: 5px;
+      }
+    }
+    .ivu-row,
+    .ivu-checkbox-group {
+      padding-bottom: 15px;
+    }
   }
 }
 </style>

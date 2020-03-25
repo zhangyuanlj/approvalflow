@@ -23,14 +23,14 @@ const Route = {
       temp = temp.join('&');
       url += '?' + temp;
     }
-    return encodeURI(url);
+    return url;
   },
   /**
    * 向地址栏添加参数
    * @param object parameters 参数对象
    */
   add: function (parameters) {
-    let url = location.href;
+    let url = decodeURIComponent(location.href);
     const connector = '?';
     let temp = [];
     if (url.indexOf(connector) == -1) {
@@ -53,7 +53,7 @@ const Route = {
    * @return object parameters 参数对象
    */
   get: function () {
-    const url = decodeURI(location.hash);
+    const url = decodeURIComponent(location.href);
     const moduleNameReg = /\#\/.*?(\/)/;
     const paramReg = /(\?).*/g;
     let moduleName = url.match(moduleNameReg);

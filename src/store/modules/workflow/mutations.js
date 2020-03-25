@@ -12,7 +12,7 @@ const mutations = {
         state.nodesData = nodesData;
     },
     [UPDATE_PERSON_LIST](state, personList) {
-        state.personList = personList;
+        state.personList = Object.assign({}, personList);
     },
     [UPDATE_EDIT_NODE](state, editNode) {
         state.editNode = editNode;

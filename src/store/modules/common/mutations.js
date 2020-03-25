@@ -1,7 +1,8 @@
 import {
     SHOW_SPIN,
     HIDE_SPIN,
-    UPDATE_ERROR_LIST
+    UPDATE_ERROR_LIST,
+    UPDATE_GENERA
 } from "./type";
 const mutations = {
     [SHOW_SPIN](state) {
@@ -12,6 +13,9 @@ const mutations = {
     },
     [UPDATE_ERROR_LIST](state, errorList) {
         state.errorList = Object.assign({}, errorList);
+    },
+    [UPDATE_GENERA](state, genera) {
+        state.genera = Object.assign({}, genera);
     }
 };
 export default mutations;

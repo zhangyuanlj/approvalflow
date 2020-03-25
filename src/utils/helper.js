@@ -1,7 +1,36 @@
 import config from "@/config";
+import Route from "utils/route";
+import $ from "jquery";
 //Url redirect
 export const redirect = href => {
-  window.location.href = `${config.baseUrl}${href}`;
+  const baseUrl = config.baseUrl;
+  const token = Route.getParam("token");
+  const id = Route.getParam("id");
+  const fromUrl = Route.getParam("fromUrl");
+  const connector = href.indexOf("?") === -1 ? "?" : "&";
+  let url = "";
+  let parameters = {};
+  if (token !== null && href.indexOf("token") === -1) {
+    parameters["token"] = `token=${token}`;
+  }
+  if (id !== null && href.indexOf("id") === -1) {
+    parameters["id"] = `id=${id}`;
+  }
+  if (fromUrl !== null && href.indexOf("fromUrl") === -1) {
+    parameters["fromUrl"] = `fromUrl=${fromUrl}`;
+  }
+  parameters = Object.values(parameters);
+  url += `${baseUrl}${href}`;
+  if (parameters.length) {
+    url += `${connector}${parameters.join("&")}`;
+  }
+  window.location.href = url;
+};
+//跳转到登录页
+export const redirectLogin = () => {
+  const href = window.location.href;
+  const loginUrl = `${config.loginUrl}?returnUrl=${href}`;
+  window.location.href = loginUrl;
 };
 //Get the type of variable
 export const typeOf = n => {
@@ -82,12 +111,29 @@ export const isIe = () => {
 export const getQueryString = (name) => {
   var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
   var r = window.location.search.substr(1).match(reg);
-  if (r != null) {
-    let ret = r[2];
-    if (ret.indexOf("/") !== -1) {
-      ret = ret.substring(0, ret.length - 1);
-    }
-    return unescape(ret)
-  }
+  if (r != null) return unescape(r[2]);
   return null;
 }
+//移动端禁止viewport滚动
+export const setViewPortNoScroll = () => {
+  const $win = $(window);
+  const $body = $("html, body");
+  const $app = $(".app-root");
+  const winH = $win.height();
+  const marginTop = $win.scrollTop();
+  $body.css({
+    height: winH,
+    overflow: "hidden"
+  });
+  $app.css("margin-top", 0 - marginTop);
+};
+//移动端恢复viewport滚动
+export const resetViewPortScroll = () => {
+  const $win = $(window);
+  const $body = $("html, body");
+  const $app = $(".app-root");
+  const scrollTop = Math.abs(parseFloat($app.css("margin-top")));
+  $body.removeAttr("style");
+  $app.removeAttr("style");
+  $win.scrollTop(scrollTop);
+};

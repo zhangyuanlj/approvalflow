@@ -41,25 +41,13 @@ export default [{
                 title: title + '->流程设计'
             },
             component: (resolve) => require(['components/ProcessDesign'], resolve)
-        }, {
-            path: '/formPreview/(.*)',
-            meta: {
-                title: title + '->预览表单'
-            },
-            component: (resolve) => require(['components/FormPreview'], resolve)
-        }, {
-            path: '/formPreview/(.*)',
-            meta: {
-                title: title + '->预览表单'
-            },
-            component: (resolve) => require(['components/FormPreview'], resolve)
         },
         {
             path: "*",
             meta: {
                 title: title + '->404'
             },
-            component: (resolve) => require(['components/HelloWorld.vue'], resolve)
+            component: (resolve) => require(['components/Common/NotFound.vue'], resolve)
         }
     ]
 }];

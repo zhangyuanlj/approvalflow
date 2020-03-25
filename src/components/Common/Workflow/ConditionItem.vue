@@ -58,6 +58,7 @@ import {
   UPDATE_MODAL_TYPE,
   UPDATE_EDIT_NODE
 } from "store/modules/workflow/type";
+import { GET_ONE_FIELD, UPDATE_ONE_FIELD } from "store/modules/formDesign/type";
 import { mapGetters, mapMutations } from "vuex";
 import NodeAddBtn from "./NodeAddBtn.vue";
 import classNames from "classnames";
@@ -104,7 +105,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      processNodesData: GET_NODES_DATA
+      processNodesData: GET_NODES_DATA,
+      getOneField: GET_ONE_FIELD
     }),
     setClass() {
       const baseClass = "condition-node";
@@ -119,7 +121,8 @@ export default {
       updateProcessData: UPDATE_NODES_DATA,
       updateShowModal: UPDATE_SHOW_MODAL,
       updateModalType: UPDATE_MODAL_TYPE,
-      updateEditNode: UPDATE_EDIT_NODE
+      updateEditNode: UPDATE_EDIT_NODE,
+      updateOneField: UPDATE_ONE_FIELD
     }),
     setTitle(node, i) {
       const nodeText = node.nodeText;
@@ -161,8 +164,24 @@ export default {
       const nodesList = copyConditionNode(this.processNodesData, node);
       this.updateProcessData(nodesList);
     },
+    //重置设为流程条件的表单字段
+    resetConditionField(node) {
+      const { data } = node.value;
+      data.forEach(item => {
+        const name = item.name;
+        const component = item.component;
+        if (component !== "originator") {
+          const designField = this.getOneField(name);
+          if (designField) {
+            designField.attribute.props.isConditionField = false;
+            this.updateOneField(designField);
+          }
+        }
+      });
+    },
     deleteNode(node) {
       const nodesList = deleteNode(this.processNodesData, node);
+      this.resetConditionField(node);
       this.updateProcessData(nodesList);
     },
     sortNode(node, type) {

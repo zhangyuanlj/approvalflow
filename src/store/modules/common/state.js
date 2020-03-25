@@ -1,5 +1,6 @@
 const state = {
     spinVisable: false,
-    errorList: {}
+    errorList: {},
+    genera: {}
 };
 export default state;

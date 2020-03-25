@@ -106,4 +106,9 @@ export default {
     margin-top: 10px;
   }
 }
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .ivu-modal-body {
+    top: 61px;
+  }
+}
 </style>

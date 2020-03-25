@@ -4,6 +4,7 @@
     class-name="df-process-node-model"
     :width="width"
     :closable="false"
+    :fullscreen="isMobile()"
     ok-text="保存"
     @on-ok="ok"
     @on-visible-change="onVisibleChange"
@@ -24,6 +25,7 @@ import {
 import { mapGetters, mapMutations } from "vuex";
 import { updateNodeData } from "./scripts/utils";
 import ModalTitle from "./ModalTitle.vue";
+import { isMobile } from "utils/helper";
 export default {
   name: "ProcessNodeModal",
   components: {
@@ -32,7 +34,8 @@ export default {
   data() {
     return {
       visible: false,
-      updateData: {}
+      updateData: {},
+      isMobile: isMobile
     };
   },
   props: {

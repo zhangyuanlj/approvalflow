@@ -54,7 +54,7 @@
                   <Radio v-for="(item ,i) in approvalWay" :key="i" :label="item.value">{{item.text}}</Radio>
                 </RadioGroup>
               </div>
-              <div v-if="nodeData.value.roles.length" class="more">
+              <!-- <div v-if="nodeData.value.roles.length" class="more">
                 <h4>审批人为空时</h4>
                 <RadioGroup v-model="nodeData.value.role.approverIsBlank">
                   <Radio
@@ -63,7 +63,7 @@
                     :label="item.value"
                   >{{item.text}}</Radio>
                 </RadioGroup>
-              </div>
+              </div> -->
             </div>
           </div>
         </div>
@@ -165,7 +165,7 @@ export default {
   },
   data() {
     return {
-      typeItems: data.typeItems,
+      typeItems: data.typeItems.slice(0, 2),
       choiceItems: data.choiceItems,
       choiceScopeItems: data.choiceScopeItems,
       approvalWay: data.approvalWay,

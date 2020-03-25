@@ -21,8 +21,8 @@
       </FormItem>
       <FormItem>
         <span slot="label" class="label">通知抄送人</span>
-        <p>
-          通知抄送人设置已移到流程设计中，
+        <p class="view-setting">
+          通知抄送人设置已移到流程设计中
           <a href="javascript:void(0);" @click="onLook">查看设置方法</a>
         </p>
       </FormItem>
@@ -52,7 +52,13 @@
         </CheckboxGroup>
       </FormItem>
     </Form>
-    <Modal v-model="visible" title="查看设置方法" :width="600" :hide-footer="true">
+    <Modal
+      v-model="visible"
+      title="查看设置方法"
+      :width="600"
+      :fullscreen="isMobile()"
+      :hide-footer="true"
+    >
       <img :src="helpImg" width="100%" />
     </Modal>
   </div>
@@ -62,6 +68,7 @@
 import { GET_ADVANCED_SETTING } from "store/modules/advancedSetting/type";
 import { mapGetters } from "vuex";
 import { duplicateList, approvalOpinion } from "./scripts/data";
+import { isMobile } from "@/utils/helper";
 import helpImg from "./images/help-img.png";
 export default {
   name: "AdvancedSettingForm",
@@ -70,7 +77,8 @@ export default {
       visible: false,
       duplicateList: duplicateList,
       approvalOpinion: approvalOpinion,
-      helpImg: helpImg
+      helpImg: helpImg,
+      isMobile: isMobile
     };
   },
   computed: {

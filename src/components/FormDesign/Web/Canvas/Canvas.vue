@@ -10,7 +10,7 @@
               class="df-component"
               :data-name="item.name"
               :data-component="item.component"
-              :data-has-widget="item.hasWidget"
+              :data-has-widget="item.attribute.isWidget"
             >
               <component :is="getComponent(item.component).designComp" :attribute="item.attribute"></component>
               <a href="javascript:void(0);" class="df-component-remove">
@@ -28,7 +28,6 @@
 </template>
 
 <script>
-// import { SHOW_SPIN, HIDE_SPIN } from "store/modules/common/type";
 import {
   GET_IS_DRAG,
   UPDATE_DESIGN_FIELD,

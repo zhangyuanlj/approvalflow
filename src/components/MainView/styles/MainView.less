@@ -1,0 +1,176 @@
+@import "~components/Styles/index.module.less";
+
+.app-container {
+    padding-top: @head-height;
+
+    &-move {
+        cursor: move;
+    }
+
+    &-unselect {
+        .non-select-text();
+    }
+
+    .df-dragging-proxy {
+        position: fixed;
+        display: none;
+        pointer-events: none;
+        box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
+    }
+}
+
+.app-head {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: @head-height;
+    background-color: @head-bg-color;
+    z-index: 999;
+
+    .goback {
+        position: absolute;
+        left: 0;
+        top: 0;
+        display: flex;
+        align-items: center;
+        height: @head-height;
+        color: #fff;
+        padding-left: 15px;
+        cursor: pointer;
+        .ivu-icon {
+            margin-right: 5px;
+        }
+    }
+
+    .step {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        width: 600px;
+        margin: 0 auto;
+
+        &-item {
+            position: relative;
+            width: 150px;
+            text-align: center;
+            line-height: @head-height;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 10;
+
+            .step-num {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                border: 1px solid #fff;
+                border-radius: 100%;
+                margin-right: 6px;
+                transition: all ease-in-out 0.3s;
+            }
+
+            &_active {
+                .step-num {
+                    color: #1583f2;
+                    background-color: #fff;
+                }
+            }
+        }
+
+        &-focus {
+            position: absolute;
+            width: 150px;
+            height: 100%;
+            left: 0;
+            background: #1583f2;
+            transition: transform ease-in-out 0.3s;
+
+            &::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                margin-left: -5px;
+                width: 0;
+                height: 0;
+                border-style: solid;
+                border-width: 0 5px 6px;
+                border-color: transparent transparent #f6f6f6;
+            }
+        }
+    }
+
+    .buttons {
+        position: absolute;
+        right: 0;
+        top: 0;
+        display: flex;
+        align-items: center;
+        height: @head-height;
+        padding-right: 15px;
+
+        button {
+            width: 80px;
+            height: 30px;
+            font-size: 14px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all ease-in-out 0.3s;
+        }
+
+        .preview-btn {
+            color: #fff;
+            margin-right: 10px;
+            border: 1px solid #fff;
+            background: none;
+
+            &:hover {
+                background: #59acfc;
+            }
+
+            &:active {
+                background: #2186ef;
+            }
+        }
+
+        .publich-bth {
+            color: #3296fa;
+            border-color: #fff;
+            border: 1px solid #fff;
+            background-color: #fff;
+
+            &:hover {
+                box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.3);
+            }
+
+            &:active {
+                background: #d6eaff;
+                box-shadow: none;
+            }
+        }
+    }
+}
+
+.df-preview-modal {
+    .ivu-modal-body {
+        height: 400px;
+        overflow-y: auto;
+    }
+}
+
+.df-spin-container {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 99999;
+}
+
+.ivu-checkbox {
+    margin-right: 5px;
+}

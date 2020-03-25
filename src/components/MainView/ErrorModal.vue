@@ -4,6 +4,7 @@
     class-name="df-error-modal"
     title="错误提示"
     :width="400"
+    :fullscreen="isMobile"
     cancel-text="我知道了"
     ok-text="前往修改"
     @on-ok="onConfirm"
@@ -20,13 +21,14 @@
 <script>
 import { GET_ERROR_LIST } from "store/modules/common/type";
 import { mapGetters } from "vuex";
-import { redirect } from "utils/helper";
+import { redirect, isMobile } from "utils/helper";
 export default {
   name: "ErrorModal",
   data() {
     return {
       items: [],
       modalVisible: false,
+      isMobile: isMobile(),
       group: "basicSetting",
       url: ""
     };

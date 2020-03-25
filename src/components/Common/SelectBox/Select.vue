@@ -1,6 +1,9 @@
 <template>
   <div class="select">
-    <div class="pannel-title">已选择列表</div>
+    <div v-if="isMobile" :class="showTitleClass" @click.stop="onClickTitle">
+      <Icon type="ios-arrow-up" />已选择列表
+    </div>
+    <div v-else class="pannel-title">已选择列表</div>
     <div class="pannel-content">
       <div v-if="selectedItems.length" class="list-container">
         <div class="list-item" v-for="(item, i) in selectedItems" :key="i">
@@ -23,8 +26,16 @@
 </template>
 
 <script>
+import { isMobile } from "@/utils/helper";
+import classNames from "classnames";
 export default {
   name: "SelectBoxSelect",
+  data() {
+    return {
+      show: false,
+      isMobile: isMobile()
+    };
+  },
   props: {
     selectedItems: {
       type: Array,
@@ -39,15 +50,20 @@ export default {
   },
   computed: {
     showTitleClass() {
-      return "pannel-title";
-      //   const baseClass = "pannel-title";
-      //   return classNames({
-      //     [baseClass]: true,
-      //     [`${baseClass}_show`]: this.show
-      //   });
+      const baseClass = "pannel-title";
+      return classNames({
+        [baseClass]: true,
+        [`${baseClass}_show`]: this.show
+      });
     }
   },
   methods: {
+    onClickTitle() {
+      if (isMobile()) {
+        this.show = !this.show;
+        this.$emit("on-open-select", this.show);
+      }
+    },
     onRemove(item) {
       this.$emit("on-selectbox-remove", item);
     }
@@ -61,6 +77,7 @@ export default {
   align-items: center;
   height: 45px;
 }
+
 .df-selectbox {
   .select {
     .pannel-title {
@@ -85,6 +102,7 @@ export default {
       height: 320px;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+
       .no-select-content {
         display: flex;
         flex-direction: column;
@@ -92,11 +110,13 @@ export default {
         align-items: center;
         height: 90%;
         color: #a3a3a3;
+
         h4 {
           font-size: 12px;
           font-weight: 500;
         }
       }
+
       .remove-btn {
         font-size: 0;
         padding: 7px 0;
@@ -136,6 +156,7 @@ export default {
           height: 35px;
           background-color: #399efa;
           border-radius: 100%;
+
           .ivu-icon {
             color: #fff;
             font-size: 20px;

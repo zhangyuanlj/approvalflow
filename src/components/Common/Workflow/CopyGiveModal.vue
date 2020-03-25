@@ -5,7 +5,7 @@
         <div class="select">
           <Button type="primary" icon="md-add" @click="onAddCotacts">选择部门/人员</Button>
           <Button type="primary" icon="md-add" @click="onAddRoles">选择角色</Button>
-          <Button type="primary" icon="md-add" @click="onAddDirector">选择主管</Button>
+          <!-- <Button type="primary" icon="md-add" @click="onAddDirector">选择主管</Button> -->
         </div>
         <div class="select-ret">
           <TagList
@@ -29,7 +29,7 @@
             :onCloseCbs="onCloseDirector"
             :onClearCbs="onClearDirector"
           ></TagList>
-          <Checkbox v-model="nodeData.value.selfSelect.isSelect">允许发起人自选抄送人</Checkbox>
+          <!-- <Checkbox v-model="nodeData.value.selfSelect.isSelect">允许发起人自选抄送人</Checkbox> -->
         </div>
       </div>
       <ContactsModal

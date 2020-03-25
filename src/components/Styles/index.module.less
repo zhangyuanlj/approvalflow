@@ -185,7 +185,7 @@
 
     .web-preview,
     .app-preview {
-        min-height: 420px;
+        min-height: 500px;
         margin: 0 auto;
         background-color: #fff;
         box-shadow: 0 0 8px 0 rgba(29, 50, 71, 0.3);
@@ -222,5 +222,33 @@
         text-indent: 2em;
         padding-bottom: 7px;
         border-bottom: 1px dashed #ccc;
+    }
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+    .df-setting {
+        width: auto;
+        padding: 20px 15px;
+        margin: 0;
+        background-color: #fff;
+
+        .ivu-form-item-label {
+            text-align: left;
+
+            .label strong {
+                display: block;
+                margin-top: 5px;
+                margin-left: 0 !important;
+            }
+        }
+
+        .ivu-dropdown {
+            display: block;
+        }
+
+        .inner {
+            padding: 0;
+            margin: 0;
+        }
     }
 }

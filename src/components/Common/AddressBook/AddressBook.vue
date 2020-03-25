@@ -196,6 +196,7 @@ export default {
         transform-origin: 0, 0;
         box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
         transition: transform 0.3s ease-in-out;
+        z-index: 2;
 
         &_show {
           transform: translateY(0);

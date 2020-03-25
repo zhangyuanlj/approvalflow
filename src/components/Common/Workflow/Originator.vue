@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="node-wrap">
-      <div class="process-node start-process-node" @click="onEdit">
+      <div class="process-node start-process-node">
         <div class="node-title">
           <strong class="title-text ellipsis">{{setNodeText}}</strong>
         </div>

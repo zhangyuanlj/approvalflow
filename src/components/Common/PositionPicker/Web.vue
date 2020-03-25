@@ -67,7 +67,6 @@ export default {
         });
         positionPicker.on("success", positionResult => {
           this.selectedPosition = positionResult;
-          window.console.log("positionResult", positionResult);
           this.$emit("on-select-postion", positionResult);
         });
         positionPicker.on("fail", () => {

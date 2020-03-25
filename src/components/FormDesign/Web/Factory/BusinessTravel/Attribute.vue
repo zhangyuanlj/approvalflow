@@ -107,6 +107,9 @@ export default {
             },
             {
               value: "轮船"
+            },
+            {
+              value: "其他"
             }
           ];
           resolve(items);
@@ -251,6 +254,7 @@ export default {
       model.value = value;
       model.attribute.name = name;
       model.attribute.title = title;
+      model.attribute.props.type = "datetime";
       model.attribute.validation.required = true;
       return model;
     },
@@ -267,8 +271,9 @@ export default {
       model.value = value;
       model.attribute.name = name;
       model.attribute.title = title;
+      model.attribute.parentComponent = `BusinessTravel`;
       model.attribute.relatedName = `${this.attribute.name}-时间区间`;
-      model.attribute.unit = "天";
+      model.attribute.unit = "小时";
       model.attribute.validationRules = [
         {
           required: true,

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="node-wrap">
-      <div :class="setClass" :data-key="nodeData.key" @click="onEdit">
+      <div :class="setClass" @click="onEdit">
         <div class="node-title">
           <strong class="title-text ellipsis">
             <Icon type="md-person" />

@@ -6,7 +6,7 @@
         <span>包含类型最多200项，每项最多20个字</span>
       </div>
     </div>
-    <div class="df-attribute-item">
+    <!-- <div class="df-attribute-item">
       <div class="item-title">
         选择时长单位：
         <Select
@@ -18,7 +18,7 @@
           <Option v-for="item in units" :value="item.value" :key="item.value">{{ item.label }}</Option>
         </Select>
       </div>
-    </div>
+    </div> -->
     <div class="df-attribute-item">
       <div class="item-content">
         <p>将根据排班自动计算外出时长，并将时长精确汇总至考勤报表</p>
@@ -88,9 +88,9 @@ export default {
       const title = "时长";
       const name = `${this.attribute.name}-${title}`;
       const value = "";
-      const units = this.units.find(item => {
-        return (item.value === this.attribute.unitValue);
-      });
+      // const units = this.units.find(item => {
+      //   return item.value === this.attribute.unitValue;
+      // });
       model.attribute = { ...numberInputModel.attribute };
       model.name = name;
       model.component = numberInputModel.component;
@@ -98,7 +98,9 @@ export default {
       model.attribute.title = title;
       model.attribute.name = name;
       model.attribute.validation.required = true;
-      model.attribute.unit = units.label.indexOf("天") !== -1 ? "天" : "小时";
+      model.attribute.parentComponent = `Egress`;
+      model.attribute.relatedName = `${this.attribute.name}-时间区间`;
+      model.attribute.unit = "小时";
       model.attribute.validationRules = [
         {
           required: true,

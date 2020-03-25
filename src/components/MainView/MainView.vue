@@ -49,7 +49,8 @@ import {
 import {
   GET_FIELD_LISTS,
   UPDATE_FIELD_LISTS,
-  UPDATE_PREVIEW_DATA
+  UPDATE_PREVIEW_DATA,
+  UPDATE_HAS_WIDGET
 } from "store/modules/formDesign/type";
 import {
   GET_BASIC_SETTING,
@@ -79,7 +80,7 @@ import {
 } from "components/Common/Workflow/scripts/utils";
 import Http from "utils/http";
 import "view-design/dist/styles/iview.css";
-import "./MainView.less";
+import "./styles/MainView.less";
 const APPROVAL_NAME_KEY = "approvalName";
 const APPROVALGROUP_NAME_KEY = "approvalGroupName";
 const FORM_DESIGN_KEY = "formDesign";
@@ -108,9 +109,11 @@ export default {
     this.bindHash();
   },
   mounted() {
+    this.genera = null;
     this.init();
   },
   updated() {
+    this.$refs.previewMoal.hide();
     this.activedItem();
   },
   beforeDestroy() {
@@ -123,24 +126,43 @@ export default {
     },
     getData() {
       const id = this.getId();
+      //是否包含套件
+      const hasWidget = formDesign => {
+        let len = formDesign.length;
+        for (let i = 0; i < len; i++) {
+          const item = formDesign[i];
+          if (item.attribute.isWidget) {
+            return true;
+          }
+        }
+        return false;
+      };
       const updateData = data => {
+        const genera = data.genera;
         const basicSetting = data.basicSetting;
         const formDesign = data.formDesign;
-        const personList = data.personList;
+        const personList = {
+          FreeFlow: data.freeFlow,
+          Contacts: data.contacts
+        };
         const processDesign = [
           processDesignData[0],
           ...data.processDesign,
           processDesignData[1]
         ];
         const advancedSetting = data.advancedSetting;
+        this.genera = genera;
         this.updateBasicSetting(basicSetting);
         this.updateFieldLists(formDesign);
         this.updatePersonList(personList);
         this.updateProcessData(processDesign);
         this.updateAdvancedSetting(advancedSetting);
+        if (hasWidget(formDesign)) {
+          this.updateHasWidget(true);
+        }
       };
       if (id) {
-        const requestUrl = `${config.apiUrl.Approval}?id=${id}`;
+        const requestUrl = `${config.apiUrl.Approval}?approvalFormTemplateId=${id}`;
         Http.get({
           url: requestUrl,
           succeed: (res, data) => {
@@ -172,6 +194,7 @@ export default {
       updatePreviewData: UPDATE_PREVIEW_DATA,
       updateBasicSetting: UPDATE_BASIC_SETTING,
       updateFieldLists: UPDATE_FIELD_LISTS,
+      updateHasWidget: UPDATE_HAS_WIDGET,
       updateProcessData: UPDATE_NODES_DATA,
       updatePersonList: UPDATE_PERSON_LIST,
       updateAdvancedSetting: UPDATE_ADVANCED_SETTING,
@@ -264,8 +287,9 @@ export default {
       this.updateProcessData(processData);
     },
     goback() {
-      const href = `/#/`;
-      redirect(href);
+      const fromUrl = this.$Route.getParam("fromUrl");
+      const href = fromUrl ? fromUrl : config.homeUrl;
+      window.location.href = href;
     },
     activedItem() {
       const href = window.location.href;
@@ -280,12 +304,8 @@ export default {
       }
     },
     clickStepItem(i, url) {
-      const id = this.getId();
       let href = `${url}/`;
       this.itemActiveIndex = i;
-      if (id) {
-        href += `?id=${id}`;
-      }
       redirect(href);
     },
     isHasChildren(item) {
@@ -301,10 +321,14 @@ export default {
       const component = item.component;
       const key = this.setFieldKey(component);
       let value = "";
-      if (arrValueReg.test(component) || item.isWidget) {
-        value = [];
+      if (item.value !== undefined) {
+        value = item.value;
       } else {
-        value = "";
+        if (arrValueReg.test(component) || item.isWidget) {
+          value = [];
+        } else {
+          value = "";
+        }
       }
       return {
         name: item.name,
@@ -337,8 +361,7 @@ export default {
       });
       return items;
     },
-    redirectFormResult() {
-      const id = this.getId();
+    redirectFormResult(id) {
       let href = "form/";
       if (id) {
         href += `?id=${id}`;
@@ -379,17 +402,17 @@ export default {
             advancedSetting
           };
           if (id) {
+            approval["genera"] = this.genera;
             Http.post({
               url: config.apiUrl.UpdateApproval,
               data: {
-                id: id,
-                approval: approval
+                ...approval
               },
               succeed: (res, data, body) => {
                 this.$Message.success({
                   content: body.msg
                 });
-                this.redirectFormResult();
+                this.redirectFormResult(data);
               }
             });
           } else {
@@ -400,7 +423,7 @@ export default {
                 this.$Message.success({
                   content: body.msg
                 });
-                this.redirectFormResult();
+                this.redirectFormResult(data);
               }
             });
           }
