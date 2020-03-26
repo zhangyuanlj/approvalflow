@@ -8,6 +8,123 @@
     content="width=device-width, initial-scale=1, maximum-scale=1,minimum-scale=1, user-scalable=no">
   <link rel="icon" href="<%= BASE_URL %>favicon.ico">
   <title><%= htmlWebpackPlugin.options.title %></title>
+  <style type="text/css">
+    body {
+      background-color: #f6f6f6 !important;
+    }
+
+    .df-spin-container {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 99999;
+    }
+
+    .ivu-spin {
+      color: #2d8cf0;
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .ivu-spin-dot {
+      position: relative;
+      display: block;
+      border-radius: 50%;
+      background-color: #2d8cf0;
+      width: 20px;
+      height: 20px;
+      -webkit-animation: ani-spin-bounce 1s 0s ease-in-out infinite;
+      animation: ani-spin-bounce 1s 0s ease-in-out infinite;
+    }
+
+    .ivu-spin-large .ivu-spin-dot {
+      width: 32px;
+      height: 32px;
+    }
+
+    .ivu-spin-small .ivu-spin-dot {
+      width: 12px;
+      height: 12px;
+    }
+
+    .ivu-spin-fix {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 8;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255, 255, 255, 0);
+    }
+
+    .ivu-spin-fullscreen {
+      z-index: 2010;
+    }
+
+    .ivu-spin-fullscreen-wrapper {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .ivu-spin-fix .ivu-spin-main {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+
+    .ivu-spin-fix .ivu-spin-dot {
+      display: inline-block;
+    }
+
+    .ivu-spin-show-text .ivu-spin-dot,
+    .ivu-spin-text {
+      display: none;
+    }
+
+    .ivu-spin-show-text .ivu-spin-text {
+      display: block;
+    }
+
+    .ivu-table-wrapper>.ivu-spin-fix {
+      border: 1px solid #dcdee2;
+      border-top: 0;
+      border-left: 0;
+    }
+
+    @-webkit-keyframes ani-spin-bounce {
+      0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+      }
+
+      100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 0;
+      }
+    }
+
+    @keyframes ani-spin-bounce {
+      0% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+      }
+
+      100% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -16,6 +133,14 @@
       continue.</strong>
   </noscript>
   <div id="app"></div>
+  <!--spinLoading-->
+  <div id="df-spin-container" class="df-spin-container">
+    <div class="ivu-spin ivu-spin-default ivu-spin-fix">
+      <div class="ivu-spin-main"><span class="ivu-spin-dot"></span>
+        <div class="ivu-spin-text"></div>
+      </div>
+    </div>
+  </div>
   <!-- built files will be auto injected -->
   <script type="text/javascript">
     var ENV = "<%= NODE_ENV %>";

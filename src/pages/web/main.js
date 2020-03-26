@@ -3,8 +3,14 @@ import Vuex from "vuex";
 import VueRouter from "vue-router";
 import ViewUI from "view-design/dist/iview.min.js";
 import App from "components/App.vue";
+import {
+    ThumbPannel,
+    Attribute
+} from "formDesign/Web";
+import Canvas from "formDesign/Web/Canvas";
 import ProcessNode from "components/Common/Workflow/ProcessNode.vue";
 import checkLogin from "utils/checkLogin";
+import componentModel from "formDesign/Web/Factory/model";
 import "utils/bus";
 import "utils/route";
 import "components/Styles/reset.module.less";
@@ -21,18 +27,22 @@ const onBeforeUnload = (e) => {
     e.returnValue = returnValue;
     return returnValue;
 };
-router.beforeEach((to, from, next) => {
-    checkLogin(to, from, next, ViewUI);
-});
 ViewUI.LoadingBar.config({
     color: "#5cb85c"
+});
+router.beforeEach((to, from, next) => {
+    checkLogin(to, from, next, ViewUI);
 });
 router.afterEach(() => {
     window.scrollTo(0, 0);
     ViewUI.LoadingBar.finish();
 });
 Vue.config.productionTip = false;
-//将流程节点组件注册为全局组件,fixed在递归时Vue抛出组件未注册的异常
+Vue.prototype.componentModel = componentModel;
+//注册组件
+Vue.component("ThumbPannel", ThumbPannel);
+Vue.component("Attribute", Attribute);
+Vue.component("Canvas", Canvas);
 Vue.component("ProcessNode", ProcessNode);
 Vue.use(VueRouter);
 Vue.use(Vuex);

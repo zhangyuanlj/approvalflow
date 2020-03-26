@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import ViewUI from "view-design/dist/iview.min.js";
 import App from "components/App.vue";
 import ProcessNode from "components/Common/Workflow/ProcessNode.vue";
+import checkLogin from "utils/checkLogin";
 import "utils/bus";
 import "utils/route";
 import {
@@ -15,12 +16,15 @@ import "components/Styles/index.module.less";
 const router = new VueRouter({
     routes: app
 });
+ViewUI.LoadingBar.config({
+    color: "#5cb85c"
+});
 router.beforeEach((to, from, next) => {
-    document.title = to.meta.title;
-    next();
+    checkLogin(to, from, next, ViewUI);
 });
 router.afterEach(() => {
     window.scrollTo(0, 0);
+    ViewUI.LoadingBar.finish();
 });
 Vue.config.productionTip = false;
 //将流程节点组件注册为全局组件,fixed在递归时Vue抛出组件未注册的异常

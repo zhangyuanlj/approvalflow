@@ -17,7 +17,10 @@
 </template>
 
 <script>
+import { GET_FIELD_LISTS } from "store/modules/formDesign/type";
+import { mapGetters } from "vuex";
 import { RadioGroup, Radio } from "view-design";
+import { getDurationCalculation } from "./scripts/utils";
 export default {
   name: "RenderRadio",
   components: {
@@ -40,6 +43,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      fieldLists: GET_FIELD_LISTS
+    }),
     showInput() {
       return this.fieldData.value === "其他";
     }
@@ -47,6 +53,28 @@ export default {
   methods: {
     onRadioChange(value) {
       if (value !== "其他") {
+        if (this.fieldData.attribute.parentComponent === "Leave") {
+          const parentField = this.fieldLists[this.parentIndex];
+          const dateTime = parentField.attribute.children.find(item => {
+            return item.name === `${parentField.attribute.name}-时间区间`;
+          });
+          const startDate = dateTime.value[0];
+          const endDate = dateTime.value[1];
+          let index = 0;
+          parentField.attribute.children.find((item, i) => {
+            index = i;
+            return item.name === `${parentField.attribute.name}-时长`;
+          });
+          getDurationCalculation({
+            context: this,
+            startDate: startDate,
+            endDate: endDate,
+            fieldData: this.fieldData,
+            fieldLists: this.fieldLists,
+            parentIndex: this.parentIndex,
+            index: index
+          });
+        }
         this.$emit(
           "on-value-change",
           "",
@@ -69,13 +97,16 @@ export default {
   }
 };
 </script>
+
 <style lang="less">
 .df-render-radio {
   .ivu-radio {
     margin-right: 10px;
   }
+
   .input {
     margin-top: 10px;
+
     .ivu-input {
       width: 100%;
     }

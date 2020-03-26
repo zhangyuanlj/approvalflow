@@ -8,16 +8,8 @@
 
 <script>
 import $ from "jquery";
-import { ThumbPannel, Attribute } from "formDesign/Web";
-import Canvas from "formDesign/Web/Canvas";
-import componentModel from "formDesign/Web/Factory/model";
 export default {
   name: "FormDesign",
-  components: {
-    ThumbPannel,
-    Canvas,
-    Attribute
-  },
   data() {
     return {
       insertItem: null
@@ -25,7 +17,7 @@ export default {
   },
   methods: {
     getComponent(component) {
-      const ret = componentModel.list.find(item => {
+      const ret = this.componentModel.list.find(item => {
         return item.component === component;
       });
       return ret;

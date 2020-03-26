@@ -44,7 +44,6 @@
 import { GET_HAS_WIDGET, UPDATE_IS_DRAG } from "store/modules/formDesign/type";
 import { mapGetters, mapMutations } from "vuex";
 import { Tabs, TabPane } from "view-design";
-import thumbModel from "./Factory/model";
 import Draggle from "libs/Draggle";
 export default {
   name: "ThumbPannel",
@@ -54,7 +53,7 @@ export default {
   },
   data() {
     return {
-      thumbModel: thumbModel
+      thumbModel: this.componentModel
     };
   },
   computed: {

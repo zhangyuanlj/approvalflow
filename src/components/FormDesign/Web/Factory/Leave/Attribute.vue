@@ -80,6 +80,7 @@ export default {
       model.value = value;
       model.attribute.name = name;
       model.attribute.title = title;
+      model.attribute.parentComponent = "Leave";
       model.attribute.validation.required = true;
       model.attribute.validationRules = [
         {

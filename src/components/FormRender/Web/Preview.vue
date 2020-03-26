@@ -70,7 +70,7 @@
         </template>
       </div>
     </Form>
-    <PersonList></PersonList>
+    <PersonList v-if="!isPreview"></PersonList>
   </div>
 </template>
 

@@ -4,6 +4,10 @@ import {
 } from "utils/helper";
 import Http from "utils/http";
 import {
+    spinShow,
+    spinHide
+} from "./spin";
+import {
     set as setUserInfo
 } from "./userInfo";
 const isInWhiteList = (path) => {
@@ -19,9 +23,16 @@ const isInWhiteList = (path) => {
 const enterRoute = (to, next, ViewUI) => {
     document.title = to.meta.title;
     ViewUI.LoadingBar.start();
+    spinHide();
     next();
 };
 const checkLogin = (to, from, next, ViewUI) => {
+    spinShow();
+    //如果是开发环境，并且没有开启登录检查，则直接跳转到对应路由
+    if (window.ENV === "development" && config.enableLoginCheck === false) {
+        enterRoute(to, next, ViewUI);
+        return;
+    }
     const path = to.path;
     //检查当前路由是否在白名单中
     if (isInWhiteList(path)) {

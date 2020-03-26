@@ -12,6 +12,7 @@ export default {
     attribute: {
         name: name,
         title: name,
+        parentComponent: "",
         props: {
             placeholder: "请输入",
             isConditionField: false

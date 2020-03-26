@@ -11,7 +11,6 @@ import {
   GET_DESIGN_FIELD_ATTRIBUTE
 } from "store/modules/formDesign/type";
 import { mapGetters } from "vuex";
-import componentModel from "./Factory/model";
 import classNames from "classnames";
 export default {
   name: "Attribute",
@@ -40,7 +39,7 @@ export default {
         return;
       }
       const component = designField.component;
-      const ret = componentModel.list.find(item => {
+      const ret = this.componentModel.list.find(item => {
         return item.component === component;
       });
       return ret.attributeComp;
@@ -103,7 +102,7 @@ export default {
       font-size: 14px;
 
       span {
-        color: rgba(25,31,37,.4);
+        color: rgba(25, 31, 37, 0.4);
         font-size: 12px;
         font-weight: 400;
         margin-left: 8px;

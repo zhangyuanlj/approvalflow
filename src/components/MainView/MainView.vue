@@ -2,7 +2,8 @@
   <div class="app-container">
     <div class="app-head">
       <div class="goback" @click="goback">
-        <Icon type="md-arrow-back" :size="20" />返回
+        <Icon type="md-arrow-back" :size="20" />
+        <span class="ellipsis">{{getId() !== null ? approvalName : "返回"}}</span>
       </div>
       <ul class="step">
         <li class="step-focus" :style="stepFocusPosition"></li>
@@ -28,9 +29,6 @@
       <router-view></router-view>
     </div>
     <div class="df-dragging-proxy"></div>
-    <div v-show="getSpinVisable()" class="df-spin-container">
-      <Spin fix></Spin>
-    </div>
     <ErrorModal ref="errorModal"></ErrorModal>
     <PreviewMoal ref="previewMoal"></PreviewMoal>
   </div>
@@ -39,13 +37,7 @@
 <script>
 import config from "@/config";
 import $ from "jquery";
-import {
-  GET_SPIN_VISABLE,
-  SHOW_SPIN,
-  HIDE_SPIN,
-  GET_ERROR_LIST,
-  UPDATE_ERROR_LIST
-} from "store/modules/common/type";
+import { GET_ERROR_LIST, UPDATE_ERROR_LIST } from "store/modules/common/type";
 import {
   GET_FIELD_LISTS,
   UPDATE_FIELD_LISTS,
@@ -94,6 +86,7 @@ export default {
   data() {
     return {
       itemActiveIndex: 0,
+      approvalName: "",
       fieldLists: []
     };
   },
@@ -114,7 +107,6 @@ export default {
   },
   updated() {
     this.$refs.previewMoal.hide();
-    this.activedItem();
   },
   beforeDestroy() {
     this.unBindHash();
@@ -151,6 +143,7 @@ export default {
           processDesignData[1]
         ];
         const advancedSetting = data.advancedSetting;
+        this.approvalName = basicSetting.approvalName;
         this.genera = genera;
         this.updateBasicSetting(basicSetting);
         this.updateFieldLists(formDesign);
@@ -180,7 +173,6 @@ export default {
       return this.$Route.getParam("id");
     },
     ...mapGetters({
-      getSpinVisable: GET_SPIN_VISABLE,
       getFieldLists: GET_FIELD_LISTS,
       getBasicSetting: GET_BASIC_SETTING,
       getNodesData: GET_NODES_DATA,
@@ -189,8 +181,6 @@ export default {
       getErrorList: GET_ERROR_LIST
     }),
     ...mapMutations({
-      showSpin: SHOW_SPIN,
-      hideSpin: HIDE_SPIN,
       updatePreviewData: UPDATE_PREVIEW_DATA,
       updateBasicSetting: UPDATE_BASIC_SETTING,
       updateFieldLists: UPDATE_FIELD_LISTS,

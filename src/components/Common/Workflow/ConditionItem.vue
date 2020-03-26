@@ -58,11 +58,16 @@ import {
   UPDATE_MODAL_TYPE,
   UPDATE_EDIT_NODE
 } from "store/modules/workflow/type";
-import { GET_ONE_FIELD, UPDATE_ONE_FIELD } from "store/modules/formDesign/type";
+import {
+  GET_ONE_FIELD,
+  GET_CONDITION_FIELD,
+  UPDATE_ONE_FIELD
+} from "store/modules/formDesign/type";
 import { mapGetters, mapMutations } from "vuex";
 import NodeAddBtn from "./NodeAddBtn.vue";
 import classNames from "classnames";
 import {
+  eachNodes as eachWorkflowNodes,
   deleteNode,
   copyConditionNode,
   sortConditionNode,
@@ -106,7 +111,8 @@ export default {
   computed: {
     ...mapGetters({
       processNodesData: GET_NODES_DATA,
-      getOneField: GET_ONE_FIELD
+      getOneField: GET_ONE_FIELD,
+      conditionField: GET_CONDITION_FIELD
     }),
     setClass() {
       const baseClass = "condition-node";
@@ -165,24 +171,41 @@ export default {
       this.updateProcessData(nodesList);
     },
     //重置设为流程条件的表单字段
-    resetConditionField(node) {
-      const { data } = node.value;
-      data.forEach(item => {
-        const name = item.name;
-        const component = item.component;
-        if (component !== "originator") {
-          const designField = this.getOneField(name);
-          if (designField) {
-            designField.attribute.props.isConditionField = false;
-            this.updateOneField(designField);
-          }
+    resetConditionField() {
+      let designFieldLen = 0;
+      eachWorkflowNodes(this.processNodesData, 0, item => {
+        if (item.nodeType === "conditionItem") {
+          const { data } = item.value;
+          data.forEach(dataItem => {
+            const name = dataItem.name;
+            const component = dataItem.component;
+            if (component !== "originator") {
+              const designField = this.getOneField(name);
+              if (designField) {
+                designFieldLen++;
+                if (setConditionContent(item) === DEFAULT_TEXT) {
+                  designField.attribute.props.isConditionField = false;
+                } else {
+                  designField.attribute.props.isConditionField = true;
+                }
+              }
+              this.updateOneField(designField);
+            }
+          });
         }
+        return false;
       });
+      if (!designFieldLen) {
+        this.conditionField.forEach(item => {
+          item.attribute.props.isConditionField = false;
+          this.updateOneField(item);
+        });
+      }
     },
     deleteNode(node) {
       const nodesList = deleteNode(this.processNodesData, node);
-      this.resetConditionField(node);
       this.updateProcessData(nodesList);
+      this.resetConditionField();
     },
     sortNode(node, type) {
       const nodesList = sortConditionNode(this.processNodesData, node, type);

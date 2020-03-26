@@ -1,8 +1,8 @@
-import Vue from "vue";
-const props = Vue.prototype;
+import $ from "jquery";
+const SPIN_ID = "#df-spin-container";
 export const spinShow = function () {
-    props.$Spin.show();
+    $(SPIN_ID).show();
 };
 export const spinHide = function () {
-    props.$Spin.hide();
+    $(SPIN_ID).hide();
 };

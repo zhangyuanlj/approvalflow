@@ -12,11 +12,10 @@
 </template>
 
 <script>
-import config from "@/config";
 import { GET_FIELD_LISTS } from "store/modules/formDesign/type";
 import { mapGetters } from "vuex";
 import { Input } from "view-design";
-import Http from "utils/http";
+import { getDurationCalculation } from "./scripts/utils";
 export default {
   name: "RenderNumberInput",
   components: {
@@ -63,43 +62,15 @@ export default {
         const dateTime = data.dateTime;
         const startDate = dateTime[0];
         const endDate = dateTime[1];
-        if (startDate && endDate) {
-          const parentComponent = this.fieldData.attribute.parentComponent;
-          const requestData = {
-            component: parentComponent,
-            startTime: startDate,
-            endTime: endDate
-          };
-          if (parentComponent === "Leave") {
-            const parentField = this.fieldLists[this.parentIndex];
-            const type = parentField.attribute.children.find(item => {
-              return item.name === `${parentField.attribute.name}-调休类型`;
-            });
-            const approvalVacationType = type.attribute.approvalVacationType;
-            const ret = approvalVacationType.find(item => {
-              return item.vacationName === type.value;
-            });
-            requestData["approvalVacationTypeId"] = ret
-              ? ret.approvalVacationTypeId
-              : "";
-          }
-          Http.post({
-            url: config.apiUrl.DurationCalculation,
-            data: requestData,
-            succeed: (res, data) => {
-              this.$emit("on-value-change", data, this.index, this.parentIndex);
-            },
-            errorCbs: () => {
-              if (parentComponent === "Leave") {
-                this.$Message.error(
-                  "时长计算失败,请重新选择起始时间及请假类型!"
-                );
-              } else {
-                this.$Message.error("时长计算失败,请重新选择起始时间!");
-              }
-            }
-          });
-        }
+        getDurationCalculation({
+          context: this,
+          startDate: startDate,
+          endDate: endDate,
+          fieldData: this.fieldData,
+          fieldLists: this.fieldLists,
+          parentIndex: this.parentIndex,
+          index: this.index
+        });
       }
     },
     bindChangeEvent() {
