@@ -10,6 +10,16 @@ This is a form process design engine
 ### Engine screenshots
 ![CSS size](https://i.postimg.cc/gYJBP5Jt/1.png)
 ![CSS size](https://i.postimg.cc/byngyjjg/2.png)
+![CSS size](https://i.postimg.cc/CFBH7Vd0/3.png)
+![CSS size](https://i.postimg.cc/WzXrH8qW/4.png)
+
+### 浏览器兼容性
+> 1.IE10+
+> 2.谷歌、火狐、safari等现代浏览器
+
+### 实际操作演示
+1.Web端：https://v.youku.com/v_show/id_XNDYxMzExOTc4NA==.html
+2.移动端：https://v.youku.com/v_show/id_XNDYxMzEyMjgxMg==.html
 
 ### Project setup
 ```
