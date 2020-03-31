@@ -1,6 +1,11 @@
 <template>
-  <div v-if="fieldLists.length" class="df-form-render">
-    <FormPreview ref="FormPreview" :isPreview="isPreview" :formData="fieldLists" :genera="genera"></FormPreview>
+  <div v-if="getFieldLists.length" class="df-form-render">
+    <FormPreview
+      ref="FormPreview"
+      :isPreview="isPreview"
+      :formData="getFieldLists"
+      :genera="genera"
+    ></FormPreview>
     <div class="button-wrapper">
       <Button type="primary" long @click="submit">提交</Button>
     </div>
@@ -12,6 +17,7 @@ import config from "@/config";
 import FormPreview from "./Preview.vue";
 import { UPDATE_BASIC_SETTING } from "store/modules/basicSetting/type";
 import {
+  GET_PREVIEW_DATA,
   GET_FIELD_LISTS,
   UPDATE_FIELD_LISTS
 } from "store/modules/formDesign/type";
@@ -44,8 +50,15 @@ export default {
   },
   computed: {
     ...mapGetters({
+      previewData: GET_PREVIEW_DATA,
       fieldLists: GET_FIELD_LISTS
-    })
+    }),
+    getFieldLists() {
+      if (this.isPreview) {
+        return this.previewData;
+      }
+      return this.fieldLists;
+    }
   },
   created() {
     this.bindHash();

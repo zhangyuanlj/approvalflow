@@ -107,6 +107,7 @@ export default {
   },
   updated() {
     this.$refs.previewMoal.hide();
+    this.activedItem();
   },
   beforeDestroy() {
     this.unBindHash();
@@ -311,14 +312,10 @@ export default {
       const component = item.component;
       const key = this.setFieldKey(component);
       let value = "";
-      if (item.value !== undefined) {
-        value = item.value;
+      if (arrValueReg.test(component) || item.isWidget) {
+        value = [];
       } else {
-        if (arrValueReg.test(component) || item.isWidget) {
-          value = [];
-        } else {
-          value = "";
-        }
+        value = "";
       }
       return {
         name: item.name,

@@ -194,19 +194,13 @@ export default {
       const item = JSON.parse(JSON.stringify(this.fieldLists.items[i]));
       const key = `${item.component}-${uuid(8, 10)}`;
       item.key = key;
-      item.value = item.value !== undefined ? item.value : "";
       item.attribute.children.forEach(children => {
         const specialValueReg = /Checkbox|DateTimeRange|Attachment|Image|Contacts|Departments/;
         let value = "";
-        delete children.value;
-        if (children.value !== undefined) {
-          value = children.value;
+        if (specialValueReg.test(children.component)) {
+          value = [];
         } else {
-          if (specialValueReg.test(children.component)) {
-            value = [];
-          } else {
-            value = "";
-          }
+          value = "";
         }
         children.parentKey = item.key;
         children.value = value;
