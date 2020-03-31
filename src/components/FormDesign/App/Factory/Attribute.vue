@@ -56,13 +56,12 @@ export default {
 .form-design-pannel {
   .attribute-content {
     .ivu-form-item {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
   }
   .df-attribute-item {
-    padding: 0 15px;
+    padding: 0;
     background-color: #fff;
-    border-bottom: 1px solid #dcdee2;
     .item-title {
       color: #000;
       font-size: 15px;

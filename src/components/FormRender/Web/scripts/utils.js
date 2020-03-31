@@ -20,8 +20,12 @@ export const getDurationCalculation = (data) => {
         if (parentComponent === "Leave") {
             const parentField = fieldLists[parentIndex];
             const type = parentField.attribute.children.find(item => {
-                return item.name === `${parentField.attribute.name}-调休类型`;
+                return item.name === `${parentField.attribute.name}-请假类型`;
             });
+            if (!type) {
+                context.$Message.error(LEAVE_ERR_MSG);
+                return;
+            }
             const approvalVacationType = type.attribute.approvalVacationType;
             const ret = approvalVacationType.find(item => {
                 return item.vacationName === type.value;
@@ -33,6 +37,7 @@ export const getDurationCalculation = (data) => {
         Http.post({
             url: config.apiUrl.DurationCalculation,
             data: requestData,
+            loading: false,
             succeed: (res, data) => {
                 context.$emit("on-value-change", data, index, parentIndex);
             },

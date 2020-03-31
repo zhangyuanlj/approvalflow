@@ -27,6 +27,7 @@
                 :fieldData="children"
                 :parentIndex="i"
                 :index="j"
+                @on-field-change="onFieldChange"
                 @on-value-change="onValueChange"
               ></component>
             </FormItem>
@@ -50,6 +51,7 @@
                 :fieldData="children"
                 :parentIndex="i"
                 :index="j"
+                @on-field-change="onFieldChange"
                 @on-value-change="onValueChange"
               ></component>
             </FormItem>
@@ -64,6 +66,7 @@
               :is="components[item.component]"
               :fieldData="item"
               :index="i"
+              @on-field-change="onFieldChange"
               @on-value-change="onValueChange"
             ></component>
           </FormItem>
@@ -251,6 +254,13 @@ export default {
     },
     reset() {
       this.$refs.renderForm.resetFields();
+    },
+    onFieldChange(parentIndex, i, fieldData) {
+      if (parentIndex === undefined) {
+        this.fieldLists.items[i] = fieldData;
+      } else {
+        this.fieldLists.items[parentIndex].attribute.children[i] = fieldData;
+      }
     },
     onValueChange(data, i, parentIndex, key) {
       const updateKey = key ? key : "value";

@@ -9,8 +9,10 @@ import {
 } from "formDesign/Web";
 import Canvas from "formDesign/Web/Canvas";
 import ProcessNode from "components/Common/Workflow/ProcessNode.vue";
-import checkLogin from "utils/checkLogin";
 import componentModel from "formDesign/Web/Factory/model";
+import {
+    spinHide
+} from "utils/spin";
 import "utils/bus";
 import "utils/route";
 import "components/Styles/reset.module.less";
@@ -22,16 +24,19 @@ import store from "@/store";
 const router = new VueRouter({
     routes: web
 });
-const onBeforeUnload = (e) => {
-    const returnValue = '确定要关闭此页吗?请确保数据已进行保存!';
-    e.returnValue = returnValue;
-    return returnValue;
-};
+// const onBeforeUnload = (e) => {
+//     const returnValue = '确定要关闭此页吗?请确保数据已进行保存!';
+//     e.returnValue = returnValue;
+//     return returnValue;
+// };
 ViewUI.LoadingBar.config({
     color: "#5cb85c"
 });
 router.beforeEach((to, from, next) => {
-    checkLogin(to, from, next, ViewUI);
+    document.title = to.meta.title;
+    ViewUI.LoadingBar.start();
+    spinHide();
+    next();
 });
 router.afterEach(() => {
     window.scrollTo(0, 0);
@@ -47,9 +52,9 @@ Vue.component("ProcessNode", ProcessNode);
 Vue.use(VueRouter);
 Vue.use(Vuex);
 Vue.use(ViewUI);
-//web端卸载页面时，弹出页面保存提示
-window.removeEventListener("beforeunload", onBeforeUnload, false);
-window.addEventListener("beforeunload", onBeforeUnload, false);
+// //web端卸载页面时，弹出页面保存提示
+// window.removeEventListener("beforeunload", onBeforeUnload, false);
+// window.addEventListener("beforeunload", onBeforeUnload, false);
 new Vue({
     router,
     store,

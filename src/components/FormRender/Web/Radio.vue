@@ -17,9 +17,11 @@
 </template>
 
 <script>
+import config from "@/config";
 import { GET_FIELD_LISTS } from "store/modules/formDesign/type";
 import { mapGetters } from "vuex";
 import { RadioGroup, Radio } from "view-design";
+import Http from "utils/http";
 import { getDurationCalculation } from "./scripts/utils";
 export default {
   name: "RenderRadio",
@@ -50,7 +52,42 @@ export default {
       return this.fieldData.value === "其他";
     }
   },
+  mounted() {
+    this.init();
+  },
   methods: {
+    init() {
+      if (this.fieldData.attribute.parentComponent === "Leave") {
+        this.getTypeItems().then(data => {
+          const fieldData = this.fieldData;
+          const items = [];
+          fieldData.attribute.approvalVacationType = data;
+          data.forEach(item => {
+            items.push({
+              value: item.vacationName
+            });
+          });
+          fieldData.attribute.items = items;
+          this.$emit(
+            "on-field-change",
+            this.parentIndex,
+            this.index,
+            fieldData
+          );
+        });
+      }
+    },
+    //获取请假类型列表
+    getTypeItems() {
+      return new Promise(resolve => {
+        Http.get({
+          url: config.apiUrl.VacationTypes,
+          succeed: (res, data) => {
+            resolve(data);
+          }
+        });
+      });
+    },
     onRadioChange(value) {
       if (value !== "其他") {
         if (this.fieldData.attribute.parentComponent === "Leave") {
@@ -61,10 +98,31 @@ export default {
           const startDate = dateTime.value[0];
           const endDate = dateTime.value[1];
           let index = 0;
+          let durationFiledIndex = 0;
+          let unit = "小时";
           parentField.attribute.children.find((item, i) => {
             index = i;
             return item.name === `${parentField.attribute.name}-时长`;
           });
+          const durationFiled = parentField.attribute.children.find(
+            (item, i) => {
+              durationFiledIndex = i;
+              return item.name === `${parentField.attribute.name}-时长`;
+            }
+          );
+          const ret = this.fieldData.attribute.approvalVacationType.find(
+            item => {
+              return item.vacationName === this.fieldData.value;
+            }
+          );
+          if (ret.minUnit === 1) {
+            unit = "天";
+          } else if (ret.minUnit === 2) {
+            unit = "半天";
+          } else if (ret.minUnit === 3) {
+            unit = "小时";
+          }
+          durationFiled.attribute.unit = unit;
           getDurationCalculation({
             context: this,
             startDate: startDate,
@@ -74,6 +132,12 @@ export default {
             parentIndex: this.parentIndex,
             index: index
           });
+          this.$emit(
+            "on-field-change",
+            this.parentIndex,
+            durationFiledIndex,
+            durationFiled
+          );
         }
         this.$emit(
           "on-value-change",

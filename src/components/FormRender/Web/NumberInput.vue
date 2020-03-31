@@ -4,6 +4,7 @@
       v-model="fieldData.value"
       type="number"
       :placeholder="setPlaceholder"
+      :readonly="fieldData.attribute.readonly"
       style="width:100%;"
     >
       <span v-if="showAppend" slot="append">{{fieldData.attribute.unit}}</span>

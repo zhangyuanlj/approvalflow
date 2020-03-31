@@ -9,6 +9,7 @@
         :value="fieldData.value[0]"
         :type="fieldData.attribute.props.type"
         :placeholder="fieldData.attribute.props.placeholder"
+        :format="fieldData.attribute.props.format"
         @on-change="onStartDateChange"
         style="width:100%;"
       ></DatePicker>
@@ -22,6 +23,7 @@
         :value="fieldData.value[1]"
         :type="fieldData.attribute.props.type"
         :placeholder="fieldData.attribute.props.placeholder"
+        :format="fieldData.attribute.props.format"
         @on-change="onEndDateChange"
         style="width:100%;"
       ></DatePicker>

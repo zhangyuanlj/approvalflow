@@ -1,6 +1,6 @@
 <template>
-  <div v-if="previewData.length" class="df-form-render">
-    <FormPreview ref="FormPreview" :isPreview="isPreview" :formData="previewData" :genera="genera"></FormPreview>
+  <div v-if="fieldLists.length" class="df-form-render">
+    <FormPreview ref="FormPreview" :isPreview="isPreview" :formData="fieldLists" :genera="genera"></FormPreview>
     <div class="button-wrapper">
       <Button type="primary" long @click="submit">提交</Button>
     </div>
@@ -12,8 +12,8 @@ import config from "@/config";
 import FormPreview from "./Preview.vue";
 import { UPDATE_BASIC_SETTING } from "store/modules/basicSetting/type";
 import {
-  GET_PREVIEW_DATA,
-  UPDATE_PREVIEW_DATA
+  GET_FIELD_LISTS,
+  UPDATE_FIELD_LISTS
 } from "store/modules/formDesign/type";
 import {
   UPDATE_NODES_DATA,
@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      previewData: GET_PREVIEW_DATA
+      fieldLists: GET_FIELD_LISTS
     })
   },
   created() {
@@ -58,7 +58,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      updatePreviewData: UPDATE_PREVIEW_DATA,
+      updateFieldLists: UPDATE_FIELD_LISTS,
       updatePersonList: UPDATE_PERSON_LIST,
       updateBasicSetting: UPDATE_BASIC_SETTING,
       updateProcessData: UPDATE_NODES_DATA,
@@ -88,7 +88,7 @@ export default {
             const advancedSetting = data.advancedSetting;
             this.genera = data.genera;
             this.updateBasicSetting(basicSetting);
-            this.updatePreviewData(formDesign);
+            this.updateFieldLists(formDesign);
             this.updateProcessData(processDesign);
             this.updatePersonList(personList);
             this.updateAdvancedSetting(advancedSetting);

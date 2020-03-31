@@ -52,7 +52,7 @@ export default {
       const model = {};
       const title = "加班人";
       const name = `${this.attribute.name}-${title}`;
-      const value = "";
+      const value = [];
       model.attribute = {
         ...contactsModel.attribute
       };
@@ -97,6 +97,7 @@ export default {
       model.attribute.title = title;
       model.attribute.name = name;
       model.attribute.parentComponent = `Overtime`;
+      model.attribute.readonly = true;
       model.attribute.relatedName = `${this.attribute.name}-时间区间`;
       model.attribute.unit = "小时";
       model.attribute.validation.required = true;

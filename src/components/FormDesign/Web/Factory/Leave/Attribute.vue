@@ -29,8 +29,15 @@ export default {
         },
         {
           render: (h, params) => {
-            const type = params.row.minUnit === 1 ? "按天请" : "按小时请";
-            return h("div", type);
+            let minUnit = "天";
+            if (params.row.minUnit === 1) {
+              minUnit = "天";
+            } else if (params.row.minUnit === 2) {
+              minUnit = "半天";
+            } else if (params.row.minUnit === 3) {
+              minUnit = "小时";
+            }
+            return h("div", `按${minUnit}请`);
           }
         }
       ],
@@ -49,27 +56,25 @@ export default {
     }
   },
   mounted() {
+    this.getTypeItems();
     this.setChildren();
   },
   methods: {
     ...mapMutations({
       updateChildren: UPDATE_CHILDREN
     }),
-    //获取调休类型列表
+    //获取请假类型列表
     getTypeItems() {
-      return new Promise(resolve => {
-        Http.get({
-          url: config.apiUrl.VacationTypes,
-          succeed: (res, data) => {
-            this.leaveData = data;
-            resolve(data);
-          }
-        });
+      Http.get({
+        url: config.apiUrl.VacationTypes,
+        succeed: (res, data) => {
+          this.leaveData = data;
+        }
       });
     },
     setTypeFiledData() {
       const model = {};
-      const title = "调休类型";
+      const title = "请假类型";
       const name = `${this.attribute.name}-${title}`;
       const value = "";
       model.attribute = {
@@ -89,17 +94,7 @@ export default {
           trigger: "change"
         }
       ];
-      return this.getTypeItems().then(data => {
-        const items = [];
-        model.attribute.approvalVacationType = data;
-        data.forEach(item => {
-          items.push({
-            value: item.vacationName
-          });
-        });
-        model.attribute.items = items;
-        return model;
-      });
+      return model;
     },
     setRangeFiledData() {
       const model = {};
@@ -115,6 +110,7 @@ export default {
       model.attribute.name = name;
       model.attribute.title = title;
       model.attribute.props.type = "datetime";
+      model.attribute.props.format = "yyyy-MM-dd HH:mm";
       model.attribute.validation.required = true;
       return model;
     },
@@ -130,6 +126,7 @@ export default {
       model.component = numberInputModel.component;
       model.value = value;
       model.attribute.title = title;
+      model.attribute.readonly = true;
       model.attribute.parentComponent = `Leave`;
       model.attribute.relatedName = `${this.attribute.name}-时间区间`;
       model.attribute.name = name;
@@ -145,15 +142,13 @@ export default {
       return model;
     },
     setChildren() {
+      const radioModel = this.setTypeFiledData();
       const dateTimeRangeModel = this.setRangeFiledData();
       const numberInputFiledData = this.setDurationFiledData();
-      let children = [];
-      this.setTypeFiledData().then(radioModel => {
-        children = [radioModel, dateTimeRangeModel, numberInputFiledData];
-        this.updateChildren({
-          name: this.attribute.name,
-          children: children
-        });
+      let children = [radioModel, dateTimeRangeModel, numberInputFiledData];
+      this.updateChildren({
+        name: this.attribute.name,
+        children: children
       });
     }
   }

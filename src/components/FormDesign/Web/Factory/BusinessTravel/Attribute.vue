@@ -271,6 +271,7 @@ export default {
       model.value = value;
       model.attribute.name = name;
       model.attribute.title = title;
+      model.attribute.readonly = true;
       model.attribute.parentComponent = `BusinessTravel`;
       model.attribute.relatedName = `${this.attribute.name}-时间区间`;
       model.attribute.unit = "小时";

@@ -4,7 +4,9 @@ import VueRouter from "vue-router";
 import ViewUI from "view-design/dist/iview.min.js";
 import App from "components/App.vue";
 import ProcessNode from "components/Common/Workflow/ProcessNode.vue";
-import checkLogin from "utils/checkLogin";
+import {
+    spinHide
+} from "utils/spin";
 import "utils/bus";
 import "utils/route";
 import {
@@ -20,7 +22,10 @@ ViewUI.LoadingBar.config({
     color: "#5cb85c"
 });
 router.beforeEach((to, from, next) => {
-    checkLogin(to, from, next, ViewUI);
+    document.title = to.meta.title;
+    ViewUI.LoadingBar.start();
+    spinHide();
+    next();
 });
 router.afterEach(() => {
     window.scrollTo(0, 0);

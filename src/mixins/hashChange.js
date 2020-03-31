@@ -11,10 +11,10 @@ const hashChangeMixin = {
             }
         },
         bindHash() {
-            window.addEventListener('hashchange', this.hashChange, false);
+            // window.addEventListener('hashchange', this.hashChange, false);
         },
         unBindHash() {
-            window.removeEventListener('hashchange', this.hashChange, false);
+            // window.removeEventListener('hashchange', this.hashChange, false);
         }
     }
 };

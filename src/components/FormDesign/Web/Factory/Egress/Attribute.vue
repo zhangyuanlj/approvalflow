@@ -97,6 +97,7 @@ export default {
       model.value = value;
       model.attribute.title = title;
       model.attribute.name = name;
+      model.attribute.readonly = true;
       model.attribute.validation.required = true;
       model.attribute.parentComponent = `Egress`;
       model.attribute.relatedName = `${this.attribute.name}-时间区间`;
