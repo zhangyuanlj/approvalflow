@@ -62,7 +62,7 @@ import ProcessNodeModal from "./ProcessNodeModal.vue";
 import TagList from "components/Common/TagList";
 import { ContactsModal } from "components/Common/AddressBook";
 import { SelectBoxModal } from "components/Common/SelectBox";
-import { updateNodeData, getRolesData, getDirectorData } from "./scripts/utils";
+import { updateNodeData, getRolesData } from "./scripts/utils";
 export default {
   name: "CopyGiveModal",
   components: {
@@ -103,9 +103,9 @@ export default {
       getRolesData().then(data => {
         this.rolesData = [...data];
       });
-      getDirectorData().then(data => {
-        this.directorData = [...data];
-      });
+      // getDirectorData().then(data => {
+      //   this.directorData = [...data];
+      // });
     },
     show() {
       this.$copyGiveModal.show();
