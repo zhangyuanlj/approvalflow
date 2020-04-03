@@ -138,11 +138,7 @@ export default {
           FreeFlow: data.freeFlow,
           Contacts: data.contacts
         };
-        const processDesign = [
-          processDesignData[0],
-          ...data.processDesign,
-          processDesignData[1]
-        ];
+        const processDesign = data.processDesign;
         const advancedSetting = data.advancedSetting;
         this.approvalName = basicSetting.approvalName;
         this.genera = genera;
@@ -371,6 +367,8 @@ export default {
     },
     //发布
     publich() {
+      this.fieldLists = this.createSaveData();
+      this.updateFieldLists(this.fieldLists);
       this.setError();
       this.$nextTick(() => {
         const errList = Object.values(this.getErrorList());
@@ -379,7 +377,7 @@ export default {
         } else {
           const id = this.getId();
           const basicSetting = this.getBasicSetting();
-          const formDesign = this.createSaveData();
+          const formDesign = this.fieldLists;
           const processDesign = this.getNodesData();
           const advancedSetting = this.getAdvancedSetting();
           const approval = {

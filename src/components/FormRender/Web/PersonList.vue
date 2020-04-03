@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!personList.Contacts.length" class="df-person-list-add">
+    <div v-if="!contactsLen" class="df-person-list-add">
       <div class="item">
         <div class="label">审批人</div>
         <Input v-model="approver.text" placeholder="请选择" @on-focus="onAddApprover('approver')"></Input>
@@ -85,9 +85,12 @@ export default {
     ...mapGetters({
       personList: GET_PERSON_LIST,
       processData: GET_NODES_DATA
-    })
+    }),
+    contactsLen() {
+      const { Contacts } = this.personList;
+      return Contacts && Contacts.length;
+    }
   },
-  mounted() {},
   methods: {
     ...mapMutations({
       updatePersonList: UPDATE_PERSON_LIST,
@@ -157,28 +160,35 @@ export default {
   .content {
     padding-bottom: 0 !important;
     margin-top: 0 !important;
+
     .title-icon {
       margin-right: 5px;
     }
+
     .ivu-card {
       .ivu-card-head {
         padding: 10px 16px;
+
         .ivu-icon {
           color: #515a6e;
         }
+
         .title-icon {
           vertical-align: -5px;
         }
       }
+
       .ivu-card-extra {
         top: 10px;
       }
     }
   }
+
   &-add {
     .item {
       margin-bottom: 15px;
     }
+
     .label {
       font-size: 14px;
       color: #515a6e;

@@ -102,11 +102,7 @@ export default {
           FreeFlow: data.freeFlow,
           Contacts: data.contacts
         };
-        const processDesign = [
-          processDesignData[0],
-          ...data.processDesign,
-          processDesignData[1]
-        ];
+        const processDesign = data.processDesign;
         const advancedSetting = data.advancedSetting;
         this.updateGenera(genera);
         this.updateBasicSetting(basicSetting);

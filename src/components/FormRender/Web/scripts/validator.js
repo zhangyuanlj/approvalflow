@@ -37,7 +37,6 @@ export default {
         return [{
             required: true,
             validator: function (rule, value, callback) {
-                window.console.log(value);
                 if (!value.length) {
                     callback(new Error(`${item.attribute.title}不能为空`));
                 } else {

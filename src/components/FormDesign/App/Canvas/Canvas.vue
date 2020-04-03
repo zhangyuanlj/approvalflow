@@ -490,6 +490,8 @@ export default {
     },
     //发布
     onPublich() {
+      const fieldLists = this.createSaveData();
+      this.setItems(fieldLists);
       this.setError();
       this.$nextTick(() => {
         const errList = Object.values(this.errorList);
@@ -498,7 +500,7 @@ export default {
         } else {
           const id = this.getId();
           const basicSetting = this.basicSetting;
-          const formDesign = this.createSaveData();
+          const formDesign = fieldLists;
           const processDesign = this.processData;
           const advancedSetting = this.advancedSetting;
           const approval = {

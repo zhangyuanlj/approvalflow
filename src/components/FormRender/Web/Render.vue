@@ -30,7 +30,6 @@ import { mapGetters, mapMutations } from "vuex";
 import { hashChangeMixin } from "mixins";
 import Http from "utils/http";
 import { redirect } from "utils/helper";
-import processDesignData from "components/Common/Workflow/scripts/nodesData";
 export default {
   name: "FormRender",
   data() {
@@ -93,11 +92,7 @@ export default {
               FreeFlow: data.freeFlow,
               Contacts: data.contacts
             };
-            const processDesign = [
-              processDesignData[0],
-              ...data.processDesign,
-              processDesignData[1]
-            ];
+            const processDesign = data.processDesign;
             const advancedSetting = data.advancedSetting;
             this.genera = data.genera;
             this.updateBasicSetting(basicSetting);

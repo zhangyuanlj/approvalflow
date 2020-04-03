@@ -54,14 +54,16 @@ export default {
     setFileList(val) {
       const fileList = [];
       const value = val.value;
-      value.forEach(item => {
-        fileList.push({
-          name: item.fileName,
-          size: item.fileSize,
-          type: item.suffix,
-          imgUrl: item.fileServerPath
+      if (value) {
+        value.forEach(item => {
+          fileList.push({
+            name: item.fileName,
+            size: item.fileSize,
+            type: item.suffix,
+            imgUrl: item.fileServerPath
+          });
         });
-      });
+      }
       this.fileList = fileList;
     },
     onUploadComplete(fileList) {
