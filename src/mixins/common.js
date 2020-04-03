@@ -9,7 +9,7 @@ const commonMixin = {
         },
         goHome() {
             const fromUrl = this.$Route.getParam("fromUrl");
-            const href = fromUrl ? fromUrl : config.homeUrl;
+            const href = fromUrl ? decodeURIComponent(fromUrl) : config.homeUrl;
             window.location.href = href;
         },
         redirect(routeUrl) {

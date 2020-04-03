@@ -30,7 +30,7 @@ const Route = {
    * @param object parameters 参数对象
    */
   add: function (parameters) {
-    let url = decodeURIComponent(location.href);
+    let url = location.href;
     const connector = '?';
     let temp = [];
     if (url.indexOf(connector) == -1) {
@@ -53,7 +53,7 @@ const Route = {
    * @return object parameters 参数对象
    */
   get: function () {
-    const url = decodeURIComponent(location.href);
+    const url = location.href;
     const moduleNameReg = /\#\/.*?(\/)/;
     const paramReg = /(\?).*/g;
     let moduleName = url.match(moduleNameReg);

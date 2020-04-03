@@ -6,10 +6,10 @@
           <Icon type="md-home" :size="iconSize" />
           <h4>主页</h4>
         </li>
-        <li @click="onClick(1)">
+        <!-- <li @click="onClick(1)">
           <Icon type="ios-create" :size="iconSize" />
           <h4>编辑</h4>
-        </li>
+        </li> -->
       </ul>
     </div>
     <div class="content">

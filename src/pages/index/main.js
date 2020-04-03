@@ -6,6 +6,7 @@ import {
 const id = getQueryString("id");
 const route = getQueryString("route");
 const fromUrl = getQueryString("fromUrl");
+const parameter = [];
 let baseUrl = `${config.baseUrl}`;
 if (route === null) {
     if (isMobile()) {
@@ -17,10 +18,10 @@ if (route === null) {
     baseUrl += `${route}/`;
 }
 if (id !== null) {
-    baseUrl += `?id=${encodeURI(id)}`;
+    parameter.push(`id=${id}`);
 }
 if (fromUrl !== null) {
-    baseUrl += `&fromUrl=${encodeURI(fromUrl)}`;
+    parameter.push(`fromUrl=${encodeURIComponent(fromUrl)}`);
 }
-window.localStorage.setItem("token", "54d591f42f224fb6b47616bedfae8d53");
+baseUrl += parameter.length ? `?${parameter.join("&")}` : "";
 window.location.href = baseUrl;

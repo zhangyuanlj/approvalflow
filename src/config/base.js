@@ -13,9 +13,9 @@ const setBaseUrl = () => {
 export default {
     baseUrl: setBaseUrl(),
     //登录页
-    loginUrl: "http://www.sclxzc.cn/LX/Index/Index",
+    loginUrl: "http://jsapp.sslxzc.cn/#/pages/login/loginNew",
     //首页
-    homeUrl: "http://www.sclxzc.cn/LX/Index/Index",
+    homeUrl: "http://jsapp.sslxzc.cn/#/pages/newApplication/applicationNav",
     //白名单,不需要进行登录拦截的路由
     whiteList: [],
     apiUrl: apiUrlConfig

@@ -1,6 +1,6 @@
 <template>
-  <ul class="df-render-datetime-range">
-    <li class="item" :data-startDate="this.fieldData.value[0]">
+  <ul v-if="fieldData.value" class="df-render-datetime-range">
+    <li class="item">
       <p class="label">
         <span class="required" v-if="fieldData.attribute.validation.required">*</span>
         <span class="label-text">{{fieldData.attribute.startDateTitle}}</span>
@@ -9,12 +9,12 @@
         :value="fieldData.value[0]"
         :type="fieldData.attribute.props.type"
         :placeholder="fieldData.attribute.props.placeholder"
-        :format="fieldData.attribute.props.format"
+        format="yyyy-MM-dd HH:mm"
         @on-change="onStartDateChange"
         style="width:100%;"
       ></DatePicker>
     </li>
-    <li class="item" :data-startDate="this.fieldData.value[1]">
+    <li class="item">
       <p class="label">
         <span class="required" v-if="fieldData.attribute.validation.required">*</span>
         <span class="label-text">{{fieldData.attribute.endDateTitle}}</span>
@@ -23,7 +23,7 @@
         :value="fieldData.value[1]"
         :type="fieldData.attribute.props.type"
         :placeholder="fieldData.attribute.props.placeholder"
-        :format="fieldData.attribute.props.format"
+        format="yyyy-MM-dd HH:mm"
         @on-change="onEndDateChange"
         style="width:100%;"
       ></DatePicker>
