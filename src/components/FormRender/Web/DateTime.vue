@@ -2,6 +2,7 @@
   <DatePicker
     :value="fieldData.value"
     :type="fieldData.attribute.props.type"
+    :format="setFormat"
     @on-change="onChange"
     style="width:100%;"
   ></DatePicker>
@@ -23,6 +24,15 @@ export default {
     index: {
       type: Number,
       default: 0
+    }
+  },
+  computed: {
+    setFormat() {
+      const { type } = this.fieldData.attribute.props;
+      if (type === "datetime") {
+        return "yyyy-MM-dd HH:mm";
+      }
+      return "yyyy-MM-dd";
     }
   },
   methods: {

@@ -9,7 +9,7 @@
         :value="fieldData.value[0]"
         :type="fieldData.attribute.props.type"
         :placeholder="fieldData.attribute.props.placeholder"
-        format="yyyy-MM-dd HH:mm"
+        :format="setFormat"
         @on-change="onStartDateChange"
         style="width:100%;"
       ></DatePicker>
@@ -23,7 +23,7 @@
         :value="fieldData.value[1]"
         :type="fieldData.attribute.props.type"
         :placeholder="fieldData.attribute.props.placeholder"
-        format="yyyy-MM-dd HH:mm"
+        :format="setFormat"
         @on-change="onEndDateChange"
         style="width:100%;"
       ></DatePicker>
@@ -47,6 +47,15 @@ export default {
     index: {
       type: Number,
       default: 0
+    }
+  },
+  computed: {
+    setFormat() {
+      const { type } = this.fieldData.attribute.props;
+      if (type === "datetime") {
+        return "yyyy-MM-dd HH:mm";
+      }
+      return "yyyy-MM-dd";
     }
   },
   methods: {
@@ -81,18 +90,22 @@ export default {
   }
 };
 </script>
+
 <style lang="less">
 .df-render-datetime-range {
   .item {
     margin-bottom: 5px;
   }
+
   .label {
     font-size: 0;
+
     &-text {
       color: #515a6e;
       font-size: 14px;
     }
   }
+
   .required {
     margin-right: 4px;
     line-height: 1;

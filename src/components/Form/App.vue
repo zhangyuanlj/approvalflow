@@ -5,9 +5,9 @@
         <Icon type="md-arrow-back" />返回
       </div>
       <div class="title">{{basicSetting.approvalName}}</div>
-      <!-- <div class="more" @click="onEdit">
+      <div class="more" @click="onEdit">
         <Button type="text">编辑</Button>
-      </div> -->
+      </div>
     </div>
     <FormRender></FormRender>
   </div>
