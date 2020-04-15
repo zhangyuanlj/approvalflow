@@ -80,6 +80,15 @@ const base = options => {
   let errorCbs = defaults.errorCbs;
   let failure = defaults.failure;
   let requestData = setRequestParams(defaults);
+  let token = window.localStorage.getItem("token");
+  if(token === null){
+    token = "";
+  }
+  else{
+    token = JSON.parse(token);
+    token = `Bearer ${token.data}`;
+  }
+  defaults.headers["Authorization"] = token;
   let fetchOpts = {
     method: defaults.method,
     headers: defaults.headers

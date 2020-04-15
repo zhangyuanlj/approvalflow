@@ -163,10 +163,15 @@ export default {
     },
     setRules(item) {
       const component = item.component;
-      if (validator[component]) {
-        return validator[component](item);
+      const { required } = item.attribute.validation;
+      if (required) {
+        if (validator[component]) {
+          return validator[component](item);
+        }
+        return validator.defaultValidator(item);
+      } else {
+        return [];
       }
-      return validator.defaultValidator(item);
     },
     //设置items分组
     setItemsGroup(name) {
