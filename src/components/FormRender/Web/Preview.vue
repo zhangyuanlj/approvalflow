@@ -163,7 +163,8 @@ export default {
     },
     setRules(item) {
       const component = item.component;
-      const { required } = item.attribute.validation;
+      const { validation } = item.attribute;
+      const required = validation && validation.required;
       if (required) {
         if (validator[component]) {
           return validator[component](item);
