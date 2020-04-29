@@ -158,6 +158,7 @@ export default {
 <style lang="less">
 .df-person-list {
   .content {
+    padding-top: 0 !important;
     padding-bottom: 0 !important;
     margin-top: 0 !important;
 

@@ -1,6 +1,9 @@
 import config from "@/config";
 import $ from "jquery";
 import Http from "utils/http";
+import {
+    isArray
+} from "utils/helper";
 export const APPROVER_VALUE = {
     type: "member",
     members: {
@@ -527,7 +530,7 @@ export const setConditionContent = (item) => {
     } = item.value;
     const defaultText = "请设置条件";
     const str = [];
-    data.forEach(item => {
+    isArray(data) && data.forEach(item => {
         if (item.checked) {
             if (item.component === "originator") {
                 const contacts = item.contacts.value;
@@ -570,10 +573,10 @@ export const setConditionContent = (item) => {
                         ) {
                             str.push(
                                 `${value.data.min.value} ${
-                    BETWEEN_SELECT[value.data.min.type]
-                  } ${item.attribute.title} ${
-                    BETWEEN_SELECT[value.data.max.type]
-                  } ${value.data.max.value}`
+                BETWEEN_SELECT[value.data.min.type]
+              } ${item.attribute.title} ${
+                BETWEEN_SELECT[value.data.max.type]
+              } ${value.data.max.value}`
                             );
                         }
                     }

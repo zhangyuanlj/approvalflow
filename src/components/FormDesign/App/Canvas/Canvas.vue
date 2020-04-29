@@ -225,6 +225,9 @@ export default {
       }
     }
   },
+  created() {
+    this.showPublishMsg = false;
+  },
   methods: {
     ...mapMutations({
       updateDesignField: UPDATE_DESIGN_FIELD,
@@ -397,9 +400,14 @@ export default {
       setViewPortNoScroll();
     },
     redirectFormResult(id) {
+      const successRedirectUrl = config.successRedirectUrl.app;
       let href = "form/";
-      if (id) {
-        href += `?id=${id}`;
+      if (successRedirectUrl !== "") {
+        href = successRedirectUrl;
+      } else {
+        if (id) {
+          href += `?id=${id}`;
+        }
       }
       redirect(href);
     },
@@ -498,6 +506,9 @@ export default {
         if (errList.length) {
           this.$refs.errorModal.show();
         } else {
+          if (this.showPublishMsg) {
+            return;
+          }
           const id = this.getId();
           const basicSetting = this.basicSetting;
           const formDesign = fieldLists;
@@ -509,6 +520,17 @@ export default {
             processDesign,
             advancedSetting
           };
+          const successMsg = (body, data) => {
+            this.showPublishMsg = true;
+            this.$Message.success({
+              content: body.msg,
+              duration: 3,
+              onClose: () => {
+                this.showPublishMsg = false;
+                this.redirectFormResult(data);
+              }
+            });
+          };
           if (id) {
             approval["genera"] = this.genera;
             Http.post({
@@ -517,10 +539,7 @@ export default {
                 ...approval
               },
               succeed: (res, data, body) => {
-                this.$Message.success({
-                  content: body.msg
-                });
-                this.redirectFormResult(data);
+                successMsg(body, data);
               }
             });
           } else {
@@ -528,10 +547,7 @@ export default {
               url: config.apiUrl.CreateApproval,
               data: approval,
               succeed: (res, data, body) => {
-                this.$Message.success({
-                  content: body.msg
-                });
-                this.redirectFormResult(data);
+                successMsg(body, data);
               }
             });
           }

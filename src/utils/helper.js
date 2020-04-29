@@ -9,20 +9,24 @@ export const redirect = href => {
   const fromUrl = Route.getParam("fromUrl");
   const connector = href.indexOf("?") === -1 ? "?" : "&";
   let url = "";
-  let parameters = {};
-  if (token !== null && href.indexOf("token") === -1) {
-    parameters["token"] = `token=${token}`;
-  }
-  if (id !== null && href.indexOf("id") === -1) {
-    parameters["id"] = `id=${id}`;
-  }
-  if (fromUrl !== null && href.indexOf("fromUrl") === -1) {
-    parameters["fromUrl"] = `fromUrl=${fromUrl}`;
-  }
-  parameters = Object.values(parameters);
-  url += `${baseUrl}${href}`;
-  if (parameters.length) {
-    url += `${connector}${parameters.join("&")}`;
+  if (/^http/.test(href)) {
+    url = href;
+  } else {
+    let parameters = {};
+    if (token !== null && href.indexOf("token") === -1) {
+      parameters["token"] = `token=${token}`;
+    }
+    if (id !== null && href.indexOf("id") === -1) {
+      parameters["id"] = `id=${id}`;
+    }
+    if (fromUrl !== null && href.indexOf("fromUrl") === -1) {
+      parameters["fromUrl"] = `fromUrl=${fromUrl}`;
+    }
+    parameters = Object.values(parameters);
+    url += `${baseUrl}${href}`;
+    if (parameters.length) {
+      url += `${connector}${parameters.join("&")}`;
+    }
   }
   window.location.href = url;
 };

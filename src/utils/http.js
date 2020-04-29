@@ -81,12 +81,10 @@ const base = options => {
   let failure = defaults.failure;
   let requestData = setRequestParams(defaults);
   let token = window.localStorage.getItem("token");
-  if(token === null){
+  if (token === null) {
     token = "";
-  }
-  else{
-    token = JSON.parse(token);
-    token = `Bearer ${token.data}`;
+  } else {
+    token = `Bearer ${token}`;
   }
   defaults.headers["Authorization"] = token;
   let fetchOpts = {

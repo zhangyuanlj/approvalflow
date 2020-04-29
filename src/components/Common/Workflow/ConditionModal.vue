@@ -83,7 +83,7 @@ import ConditionOriginator from "./ConditionOriginator.vue";
 import ConditionRadio from "./ConditionRadio.vue";
 import ConditionNumber from "./ConditionNumber.vue";
 import { creatId, updateNodeData } from "./scripts/utils";
-import { isMobile } from "utils/helper";
+import { isMobile, isArray } from "utils/helper";
 import helpImg from "./images/condition-expain.gif";
 export default {
   name: "ConditionModal",
@@ -136,31 +136,43 @@ export default {
     },
     getConditionField() {
       const { data } = this.nodeData.value;
-      const ret = data.filter(item => {
-        return item.isConditionField === true && item.required === true;
-      });
-      return ret;
+      if (isArray(data)) {
+        const ret = data.filter(item => {
+          return item.isConditionField === true && item.required === true;
+        });
+        return ret;
+      }
+      return [];
     },
     getNonRequiredList() {
       const { data } = this.nodeData.value;
-      const ret = data.filter(item => {
-        return item.required === false;
-      });
-      return ret;
+      if (isArray(data)) {
+        const ret = data.filter(item => {
+          return item.required === false;
+        });
+        return ret;
+      }
+      return [];
     },
     getUsableLen() {
       const { data } = this.nodeData.value;
-      const ret = data.filter(item => {
-        return item.checked === false;
-      });
-      return ret.length;
+      if (isArray(data)) {
+        const ret = data.filter(item => {
+          return item.checked === false;
+        });
+        return ret.length;
+      }
+      return 0;
     },
     getHasChooseLen() {
       const { data } = this.nodeData.value;
-      const ret = data.filter(item => {
-        return item.checked === true;
-      });
-      return ret.length;
+      if (isArray(data)) {
+        const ret = data.filter(item => {
+          return item.checked === true;
+        });
+        return ret.length;
+      }
+      return 0;
     },
     setConditionField() {
       const updateData = this.nodeData;
