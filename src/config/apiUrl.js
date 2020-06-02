@@ -1,4 +1,4 @@
-const baseUrl = "http://xwbg.sslxzc.cn/api";
+const baseUrl = "http://183.134.65.8:5000/api";
 export default {
     //审批单接口
     CheckToken: `${baseUrl}/Common/CheckToken`,

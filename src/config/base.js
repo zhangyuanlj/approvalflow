@@ -17,11 +17,11 @@ export default {
     loginUrl: "http://jsweb.sslxzc.cn/#/login",
     //首页
     //homeUrl: "http://jsapp.sslxzc.cn/#/pages/newApplication/applicationNav",
-    homeUrl: "http://jsweb.sslxzc.cn",
+    homeUrl: `http://${window.location.host}/index.html`,
     //发布或者更新成功后跳转的地址
     successRedirectUrl: {
-        web: "http://jsweb.sslxzc.cn",
-        app: "http://jsapp.sslxzc.cn"
+        web: "",
+        app: ""
     },
     //白名单,不需要进行登录拦截的路由
     whiteList: [],
