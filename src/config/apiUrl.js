@@ -1,4 +1,4 @@
-const baseUrl = "http://183.134.65.8:5000/api";
+const baseUrl = "";
 export default {
     //审批单接口
     CheckToken: `${baseUrl}/Common/CheckToken`,

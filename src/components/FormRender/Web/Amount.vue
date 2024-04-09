@@ -7,7 +7,7 @@
       clearable
       @on-change="onChange"
     />
-    <p v-if="fieldData.attribute.showUpperCase">大写：{{upperCaseStr}}</p>
+    <p v-if="fieldData.attribute.showUpperCase">大写：{{ upperCaseStr }}</p>
   </div>
 </template>
 
@@ -22,13 +22,13 @@ const UPPER_CASE = {
   6: "陆",
   7: "柒",
   8: "捌",
-  9: "玖"
+  9: "玖",
 };
 export default {
   name: "RenderAmount",
   data() {
     return {
-      upperCaseStr: ""
+      upperCaseStr: "",
     };
   },
   props: {
@@ -36,20 +36,20 @@ export default {
       type: Object,
       default: () => {
         return {};
-      }
-    }
+      },
+    },
   },
   methods: {
     onChange(e) {
       const value = e.target.value;
       const valueArr = value.split("");
       let upperCaseStr = [];
-      valueArr.forEach(item => {
+      valueArr.forEach((item) => {
         upperCaseStr.push(UPPER_CASE[item]);
       });
       this.upperCaseStr = upperCaseStr.join("");
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less">
