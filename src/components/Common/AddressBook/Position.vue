@@ -5,11 +5,12 @@
     <span class="item" v-for="(item, i) in items" :key="i">
       <Icon type="ios-arrow-forward" :size="16" />
       <a
-        v-if="i!==items.length-1"
+        v-if="i !== items.length - 1"
         href="javascript:void(0);"
-        @click="onGoTarget(item,i)"
-      >{{item.menuName}}</a>
-      <span v-else>{{item.menuName}}</span>
+        @click="onGoTarget(item, i)"
+        >{{ item.menuName }}</a
+      >
+      <span v-else>{{ item.menuName }}</span>
     </span>
   </div>
 </template>
@@ -21,7 +22,8 @@ export default {
   name: "AddressBookPosition",
   data() {
     return {
-      items: []
+      rootNodes: [],
+      items: [],
     };
   },
   props: {
@@ -29,8 +31,8 @@ export default {
       type: Array,
       default: () => {
         return [];
-      }
-    }
+      },
+    },
   },
   watch: {
     currentDepartments: {
@@ -41,16 +43,16 @@ export default {
         } else {
           this.items = [];
         }
-      }
-    }
+      },
+    },
   },
   methods: {
     ...mapMutations({
-      updateCurrentDepartments: UPDATE_CURRENT_DEPARTMENTS
+      updateCurrentDepartments: UPDATE_CURRENT_DEPARTMENTS,
     }),
     unique() {
       const items = {};
-      this.items.forEach(item => {
+      this.items.forEach((item) => {
         if (item) {
           items[item.id] = item;
         }
@@ -65,8 +67,8 @@ export default {
       const position = this.items;
       this.items.splice(i + 1, position.length - 1);
       this.updateCurrentDepartments([item]);
-    }
-  }
+    },
+  },
 };
 </script>
 

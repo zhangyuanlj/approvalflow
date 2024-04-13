@@ -8,28 +8,30 @@
         </div>
         <div class="result-content">
           <template v-if="isMobile">
-            <p>{{selectedPosition.address}}</p>
+            <p>{{ selectedPosition.address }}</p>
           </template>
           <template v-else>
             <p>
               <strong>经纬度:</strong>
-              {{selectedPosition.position.lng}},{{selectedPosition.position.lat}}
+              {{ selectedPosition.position.lng }},{{
+                selectedPosition.position.lat
+              }}
             </p>
             <p>
               <strong>地址:</strong>
-              {{selectedPosition.address}}
+              {{ selectedPosition.address }}
             </p>
             <p>
               <strong>最近的路口:</strong>
-              {{selectedPosition.nearestJunction}}
+              {{ selectedPosition.nearestJunction }}
             </p>
             <p>
               <strong>最近的路:</strong>
-              {{selectedPosition.nearestRoad}}
+              {{ selectedPosition.nearestRoad }}
             </p>
             <p>
               <strong>最近的POI:</strong>
-              {{selectedPosition.nearestPOI}}
+              {{ selectedPosition.nearestPOI }}
             </p>
           </template>
         </div>
@@ -47,7 +49,7 @@ export default {
   data() {
     return {
       selectedPosition: null,
-      isMobile: isMobile()
+      isMobile: isMobile(),
     };
   },
   mounted() {
@@ -57,27 +59,28 @@ export default {
     init() {
       const toolBar = new AMap.ToolBar();
       const map = new AMap.Map("container", {
-        zoom: 16
+        zoom: 16,
       });
       map.addControl(toolBar);
-      AMapUI.loadUI(["misc/PositionPicker"], PositionPicker => {
+      AMapUI.loadUI(["misc/PositionPicker"], (PositionPicker) => {
         const positionPicker = new PositionPicker({
           mode: "dragMarker",
-          map: map
+          map: map,
         });
-        positionPicker.on("success", positionResult => {
+        positionPicker.on("success", (positionResult) => {
           this.selectedPosition = positionResult;
           this.$emit("on-select-postion", positionResult);
         });
-        positionPicker.on("fail", () => {
+        positionPicker.on("fail", (err) => {
+          window.alert(JSON.stringify(err));
           this.$Message.error({
-            content: "没找找到对应的地址，关闭对话框重试！"
+            content: "没找找到对应的地址，关闭对话框重试！",
           });
         });
         positionPicker.start();
       });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="less">

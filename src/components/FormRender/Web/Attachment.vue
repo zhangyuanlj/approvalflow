@@ -1,11 +1,13 @@
 <template>
+
   <Uploader
     :action="action"
     :uploadedList="fileList"
-    :accept="['doc','docx','xls', 'xlsx', 'rar', 'zip', 'ppt', 'pptx', 'txt']"
+    :accept="['doc', 'docx', 'xls', 'xlsx', 'rar', 'zip', 'ppt', 'pptx', 'txt']"
     @on-upload-complete="onUploadComplete"
     @on-delete="onDelete"
   ></Uploader>
+
 </template>
 
 <script>
@@ -16,13 +18,13 @@ import mixinsForm from "view-design/src/mixins/form";
 export default {
   name: "RenderAttachment",
   components: {
-    Uploader
+    Uploader,
   },
   mixins: [Emitter, mixinsForm],
   data() {
     return {
-      action: config.apiUrl.attachment,
-      fileList: []
+      action: `${config.requestUrl}${config.apiUrl.attachment}`,
+      fileList: [],
     };
   },
   props: {
@@ -30,22 +32,22 @@ export default {
       type: Object,
       default: () => {
         return {};
-      }
+      },
     },
     parentIndex: {
-      type: Number
+      type: Number,
     },
     index: {
       type: Number,
-      default: 0
-    }
+      default: 0,
+    },
   },
   watch: {
     fieldData: {
       handler(val) {
         this.setFileList(val);
-      }
-    }
+      },
+    },
   },
   mounted() {
     this.setFileList(this.fieldData);
@@ -55,12 +57,12 @@ export default {
       const fileList = [];
       const value = val.value;
       if (value) {
-        value.forEach(item => {
+        value.forEach((item) => {
           fileList.push({
             name: item.fileName,
             size: item.fileSize,
             type: item.suffix,
-            imgUrl: item.fileServerPath
+            imgUrl: item.fileServerPath,
           });
         });
       }
@@ -73,7 +75,8 @@ export default {
     onDelete(fileList) {
       this.$emit("on-value-change", fileList, this.index, this.parentIndex);
       this.dispatch("FormItem", "on-form-change", fileList);
-    }
-  }
+    },
+  },
 };
 </script>
+

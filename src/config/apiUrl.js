@@ -1,36 +1,34 @@
-const baseUrl = "http://183.134.65.8:5000/api";
 export default {
     //审批单接口
-    CheckToken: `${baseUrl}/Common/CheckToken`,
-    // CheckToken: `Common/CheckToken`,
+    CheckToken: `Common/CheckToken`,
     //审批单接口
-    Approval: `${baseUrl}/ApprovalFormTemplate/GetModel`,
+    Approval: `ApprovalFormTemplate/GetModel`,
     //创建审批单
-    CreateApproval: `${baseUrl}/ApprovalFormTemplate/Add`,
+    CreateApproval: `ApprovalFormTemplate/Add`,
     //更新审批单
-    UpdateApproval: `${baseUrl}/ApprovalFormTemplate/Update`,
+    UpdateApproval: `ApprovalFormTemplate/Update`,
     //获取表单
     ApprovalFormTemplateGetList: "Rpc_ApprovalFormTemplate/GetList",
     //多个部门下的联系人
-    getContacts: `${baseUrl}/Teacher/GetTeacherByDepartmentIds`,
+    getContacts: `Common/GetContacts`,
     //部门
-    getDepartments: `${baseUrl}/Teacher/GetTeacherOrganizationalStructure`,
+    getDepartments: `Common/GetDepartments`,
     //搜索联系人
-    searchContacts: `${baseUrl}/Teacher/GetList`,
+    searchContacts: `Common/SearchUser`,
     //附件上传
-    attachment: `${baseUrl}/Attachment/UpLoadFile`,
+    attachment: `Common/UpLoadFile`,
     //图片上传
-    image: `${baseUrl}/Attachment/UpLoadImg`,
+    image: `Common/UpLoadFile`,
     //审批分组
-    ApprovalGroup: `${baseUrl}/ApprovalGroup/GetList`,
+    ApprovalGroup: `ApprovalGroup/GetList`,
     //请假类型
-    VacationTypes: `${baseUrl}/VacationTypes/GetList`,
+    VacationTypes: `VacationTypes/GetList`,
     //提交表单
-    Submit: `${baseUrl}/ApprovalApply/Add`,
+    Submit: `ApprovalApply/Add`,
     //获取角色列表
-    GetRolesList: `${baseUrl}/Role/GetApprovalRole`,
+    GetRolesList: `Common/GetRoles`,
     //获取主管列表
     GetApprovalList: `Rpc_Approval_Director/GetList`,
     //时长计算
-    DurationCalculation: `${baseUrl}/VacationTypes/DurationCalculation`
+    DurationCalculation: `VacationTypes/DurationCalculation`
 };

@@ -79,7 +79,7 @@ export default {
   computed: {
     showCheckbox() {
       const multiple = this.fieldData.attribute.multiple;
-      if (multiple === "只能选择一人") {
+      if (multiple === "只能选择一个部门") {
         return false;
       }
       return true;

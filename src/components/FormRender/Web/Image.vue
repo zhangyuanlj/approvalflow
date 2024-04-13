@@ -22,7 +22,7 @@ export default {
   mixins: [Emitter, mixinsForm],
   data() {
     return {
-      action: config.apiUrl.image,
+      action: `${config.requestUrl}${config.apiUrl.image}`,
       fileList: []
     };
   },

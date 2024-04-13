@@ -1,6 +1,10 @@
 <template>
   <div class="departments">
-    <CheckAll :multiple="multiple" :checkAll="checkAll" @on-departments-checkall="onCheckAll"></CheckAll>
+    <CheckAll
+      :multiple="multiple"
+      :checkAll="checkAll"
+      @on-departments-checkall="onCheckAll"
+    ></CheckAll>
     <div :class="setDepartmentsMainClass">
       <div class="items-list">
         <div
@@ -15,8 +19,8 @@
           <div class="item-content">
             <div class="text" :title="item.menuName">
               <div class="item-inner">
-                {{item.menuName}}
-                <strong v-if="item.count">({{item.count}}人)</strong>
+                {{ item.menuName }}
+                <strong v-if="item.count">({{ item.count }}人)</strong>
               </div>
             </div>
             <a
@@ -51,7 +55,7 @@ import {
   UPDATE_CONTACTS,
   UPDATE_CURRENT_DEPARTMENTS,
   UPDATE_SELECTED_DEPARTMENTS,
-  UPDATE_SELECTED_CONTACTS
+  UPDATE_SELECTED_CONTACTS,
 } from "store/modules/addressBook/type";
 import { mapGetters, mapMutations } from "vuex";
 import CheckAll from "./CheckAll.vue";
@@ -62,44 +66,44 @@ export default {
   name: "Departments",
   components: {
     CheckAll,
-    Contacts
+    Contacts,
   },
   data() {
     return {
       listData: {
         departments: [],
-        contacts: []
+        contacts: [],
       },
-      checkAll: false
+      checkAll: false,
     };
   },
   props: {
     multiple: {
       type: Boolean,
-      default: false
+      default: false,
     },
     showContacts: {
       type: Boolean,
-      default: true
+      default: true,
     },
     currentDepartments: {
       type: Array,
       default: () => {
         return [];
-      }
+      },
     },
     selectedDepartments: {
       type: Object,
       default: () => {
         return {};
-      }
+      },
     },
     selectedContacts: {
       type: Object,
       default: () => {
         return {};
-      }
-    }
+      },
+    },
   },
   watch: {
     currentDepartments: {
@@ -112,27 +116,27 @@ export default {
           this.showLowerLevelData(val[0]);
         }
         this.checkAll = this.isCheckAll();
-      }
+      },
     },
     selectedDepartments: {
       handler(val) {
         this.selectedDepartmentsHandler(val);
-      }
+      },
     },
     selectedContacts: {
       handler(val) {
         this.selectedContactsHandler(val);
-      }
-    }
+      },
+    },
   },
   computed: {
     setDepartmentsMainClass() {
       const baseClass = "departments-main";
       return classNames({
         [`${baseClass}`]: true,
-        [`${baseClass}_has-checkall`]: this.multiple
+        [`${baseClass}_has-checkall`]: this.multiple,
       });
-    }
+    },
   },
   mounted() {
     this.getDepartmentsData();
@@ -143,7 +147,7 @@ export default {
         url: config.apiUrl.getDepartments,
         succeed: (res, data) => {
           this.listData.departments = data;
-          this.listData.departments.forEach(item => {
+          this.listData.departments.forEach((item) => {
             if (!item.childNode) {
               this.listData.contacts.push(item);
             }
@@ -153,21 +157,21 @@ export default {
           if (this.showContacts) {
             this.selectedContactsHandler(this.selectedContacts);
           }
-        }
+        },
       });
     },
     getCheckedList() {
       const departments = this.listData.departments;
       const contacts = this.listData.contacts;
-      const departmentsCheckedList = departments.filter(item => {
+      const departmentsCheckedList = departments.filter((item) => {
         return item.checked;
       });
-      const contactsCheckedList = contacts.filter(item => {
+      const contactsCheckedList = contacts.filter((item) => {
         return item.checked;
       });
       return {
         departments: departmentsCheckedList,
-        contacts: contactsCheckedList
+        contacts: contactsCheckedList,
       };
     },
     getCheckedListLen() {
@@ -196,7 +200,7 @@ export default {
       const baseClass = "checkbox";
       return classNames({
         [baseClass]: true,
-        [`${baseClass}_checked`]: item.checked
+        [`${baseClass}_checked`]: item.checked,
       });
     },
     setSelectedDepartments(item) {
@@ -229,14 +233,14 @@ export default {
       getContacts: GET_CONTACTS,
       getCurrentDepartments: GET_CURRENT_DEPARTMENTS,
       getSelectedDepartments: GET_SELECTED_DEPARTMENTS,
-      getSelectedContacts: GET_SELECTED_CONTACTS
+      getSelectedContacts: GET_SELECTED_CONTACTS,
     }),
     ...mapMutations({
       updateDepartments: UPDATE_DEPARTMENTS,
       updateContacts: UPDATE_CONTACTS,
       updateCurrentDepartments: UPDATE_CURRENT_DEPARTMENTS,
       updateSelectedDepartments: UPDATE_SELECTED_DEPARTMENTS,
-      updateSelectedContacts: UPDATE_SELECTED_CONTACTS
+      updateSelectedContacts: UPDATE_SELECTED_CONTACTS,
     }),
     selectedItem(item) {
       const checked = item.checked;
@@ -245,7 +249,7 @@ export default {
         this.checkAll = this.isCheckAll();
         this.setSelectedDepartments(item);
       } else {
-        this.listData.departments.forEach(department => {
+        this.listData.departments.forEach((department) => {
           department.checked = false;
           this.setSelectedDepartments(department);
         });
@@ -255,7 +259,7 @@ export default {
       this.$forceUpdate();
     },
     selectedDepartmentsHandler(val) {
-      this.listData.departments.forEach(item => {
+      this.listData.departments.forEach((item) => {
         const id = item.id ? item.id : item.departmentId;
         if (val[id]) {
           item.checked = true;
@@ -291,14 +295,14 @@ export default {
     },
     //从某一层数据中删选出部门
     filterDeparments(levelData) {
-      const deparments = levelData.filter(item => {
+      const deparments = levelData.filter((item) => {
         return item.childNode;
       });
       this.listData.departments = deparments;
     },
     //从某一层数据中删选出联系人
     filterContacts(levelData) {
-      const contacts = levelData.filter(item => {
+      const contacts = levelData.filter((item) => {
         return !item.childNode;
       });
       this.listData.contacts = contacts;
@@ -328,7 +332,7 @@ export default {
     onCheckAll(checkAll) {
       const departments = this.listData.departments;
       this.checkAll = checkAll;
-      departments.forEach(item => {
+      departments.forEach((item) => {
         item.checked = checkAll;
         this.setSelectedDepartments(item);
       });
@@ -347,8 +351,8 @@ export default {
       } else {
         this.checkAll = false;
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

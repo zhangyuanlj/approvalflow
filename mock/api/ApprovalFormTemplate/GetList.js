@@ -37,7 +37,7 @@ const resBody = {
 };
 //参数id会附加到地址栏，例如Rpc_Approval/GetList?id=1024
 //直接访问http://127.0.0.1:3000/Rpc_Approval/GetList可以看到返回结果
-const resData = response(1, resBody, "数据获取成功");
+const resData = response(200, resBody, "数据获取成功");
 module.exports = {
     resData: resData
 };

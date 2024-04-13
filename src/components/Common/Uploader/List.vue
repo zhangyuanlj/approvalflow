@@ -118,6 +118,7 @@ export default {
     },
     setImage(file) {
       const imgUrl = file.imgUrl;
+      window.console.log(imgUrl);
       if (file.imgUrl) {
         return {
           "background-image": `url('${imgUrl}')`

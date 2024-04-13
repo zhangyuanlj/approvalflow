@@ -214,7 +214,7 @@ export default {
       const response = JSON.parse(res.response);
       const data = response.data;
       const code = parseInt(response.code);
-      if (code === 1) {
+      if (code === 200) {
         file["name"] = data[this.severFileField.name];
         file["data"] = data;
         if (testImage(file)) {
@@ -222,7 +222,7 @@ export default {
         }
       }
       //没有登录
-      else if (code === 3) {
+      else if (code === 401) {
         const loginUrl = config.loginUrl;
         redirect(loginUrl);
       }

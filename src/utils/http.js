@@ -110,14 +110,14 @@ const base = options => {
         if (res.ok) {
           res.json().then(data => {
             const body = data;
-            const bodyData = body.data ? body.data : [];
+            const bodyData = body?.data;
             const code = parseInt(body.code);
             //请求成功
-            if (code === 1) {
+            if (code === 200) {
               succeed(res, bodyData, body);
             }
             //没有登录
-            else if (code === 3) {
+            else if (code === 401) {
               redirectLogin();
             }
             //业务异常
