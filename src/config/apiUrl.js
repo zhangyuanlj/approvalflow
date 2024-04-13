@@ -1,4 +1,3 @@
-const baseUrl = "";
 export default {
     //审批单接口
     CheckToken: `Common/CheckToken`,
